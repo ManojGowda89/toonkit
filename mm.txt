@@ -1,0 +1,379 @@
+
+## 🎯 Project Goal
+
+Build a **modern, production-ready documentation & demo website** for the npm package:
+
+### 📦 toonkit
+
+Typed Object Oriented Notation parser & serializer.
+
+The website should:
+
+* explain TOON format
+* demonstrate API usage
+* simulate send & receive TOON
+* provide interactive examples
+* include developer info & installation guide
+* include SEO optimization
+* provide modern developer documentation experience
+
+---
+
+# 🧱 Tech Stack
+
+### Framework
+
+* Next.js 14+ (App Router)
+* TypeScript
+
+### UI & Styling
+
+* Material UI (MUI v5+)
+* Responsive layout
+* Dark/Light mode toggle
+* Clean developer-focused design
+
+### Backend (API simulation)
+
+* Next.js API routes
+* simulate TOON send & receive
+* parse & return structured JSON
+
+### SEO
+
+* next/head metadata
+* OpenGraph & Twitter tags
+* structured meta tags
+* sitemap ready structure
+
+---
+
+# 🎨 Design Requirements
+
+Create a **modern developer docs UI similar to:**
+
+* Stripe docs
+* Supabase docs
+* Vercel docs
+
+### UI Style
+
+✔ minimal
+✔ spacious layout
+✔ developer-friendly
+✔ syntax highlighted code blocks
+✔ card-based layout
+✔ animated transitions
+✔ sticky sidebar navigation
+
+---
+
+# 🗂 Website Structure
+
+## 🏠 Home Page
+
+### Hero Section
+
+* toonkit logo/title
+* tagline:
+  **Typed Object Oriented Notation for modern APIs**
+* short intro
+* CTA buttons:
+
+  * Get Started
+  * Try Playground
+  * View GitHub
+
+### Features Section
+
+* smaller payloads
+* human readable
+* schema + types
+* multi-resource support
+* perfect for APIs & bots
+
+### Why TOON vs JSON comparison table
+
+---
+
+## 📘 Documentation Section
+
+### Sidebar Navigation
+
+* Introduction
+* What is TOON?
+* Installation
+* Data Types
+* Examples
+* API Usage
+* Express Integration
+* Frontend Usage
+* Postman Guide
+* Performance
+* Use Cases
+
+---
+
+## 📦 Installation Page
+
+Show:
+
+```bash
+npm install toonkit
+```
+
+### Import Examples
+
+CommonJS & ES Modules
+
+---
+
+## 🧠 What is TOON Page
+
+Explain concept clearly.
+
+Show formatted example.
+
+Show parsed JSON output.
+
+---
+
+## 🧬 Data Types Page
+
+Display table:
+
+| Code | Type | Example |
+
+---
+
+## 🧪 API Usage Page
+
+### JSON → TOON
+
+### TOON → JSON
+
+### Fetch Example
+
+### Express Backend Example
+
+---
+
+## 🧪 Interactive Playground (IMPORTANT ⭐)
+
+Create a live simulation tool.
+
+### Left Panel
+
+Textarea → JSON input
+
+### Right Panel
+
+Generated TOON output
+
+### Second Mode Toggle:
+
+TOON → JSON
+
+### Buttons:
+
+* Convert
+* Clear
+* Load Sample
+
+---
+
+## 🔄 API Simulator Page
+
+Create live API simulation:
+
+### Section: Send TOON Request
+
+User inputs TOON text.
+
+### Button: Send
+
+### Response panel:
+
+Shows parsed JSON response.
+
+---
+
+## 🧪 Next.js API Routes
+
+Create routes:
+
+### POST `/api/toon/send`
+
+Accepts TOON text
+Returns parsed JSON
+
+### POST `/api/toon/receive`
+
+Accepts JSON
+Returns TOON format
+
+---
+
+## 📊 Examples Page
+
+Include:
+
+* Pagination example
+* Multiple collections
+* Real-world API response
+* Bot automation example
+
+---
+
+## ⚡ Performance Page
+
+Explain benefits vs JSON:
+
+* payload size
+* parsing speed
+* readability
+* network efficiency
+
+---
+
+## 🧰 Use Cases Page
+
+Include cards:
+
+* APIs
+* Chrome extensions
+* bots
+* microservices
+* automation
+* admin dashboards
+
+---
+
+## 👨‍💻 Developer Page
+
+### Developer Info
+
+**Manoj Gowda**
+
+Links:
+
+🌐 [https://manojgowda.in](https://manojgowda.in)
+💻 [https://github.com/ManojGowda89](https://github.com/ManojGowda89)
+📦 [https://github.com/ManojGowda89/toonkit](https://github.com/ManojGowda89/toonkit)
+
+---
+
+## 💬 Developer Note
+
+Explain purpose of toonkit.
+
+Encourage contributions.
+
+---
+
+## 🤝 Contributing Page
+
+Guide to:
+
+* open PR
+* report issues
+* suggest features
+
+---
+
+## ⭐ GitHub CTA Section
+
+Encourage users to star the repo.
+
+---
+
+# 🔍 SEO Requirements
+
+Add:
+
+* page titles
+* meta descriptions
+* OpenGraph tags
+* semantic HTML
+* proper heading hierarchy
+
+Example title:
+
+**toonkit — Typed Object Notation for APIs**
+
+---
+
+# ✨ UI Enhancements
+
+Include:
+
+✔ code syntax highlighting
+✔ copy-to-clipboard buttons
+✔ smooth scrolling
+✔ responsive sidebar
+✔ mobile friendly design
+✔ loading animations
+✔ toast notifications
+
+---
+
+# 🎯 Additional Requirements
+
+### Add Navbar
+
+* Docs
+* Playground
+* API Simulator
+* GitHub
+* Developer
+
+### Footer
+
+Include:
+
+* copyright
+* GitHub link
+* MIT License
+* Powered by toonkit
+
+---
+
+# 🧪 Sample Data for Playground
+
+Provide sample JSON and TOON examples preloaded.
+
+---
+
+# 🚀 Expected Result
+
+A professional documentation website where:
+
+✅ developers understand TOON instantly
+✅ they can test it live
+✅ they can simulate API calls
+✅ they can copy code examples
+✅ they can install & use quickly
+
+---
+
+# ⭐ Output Requirements
+
+Generate:
+
+* full Next.js project structure
+* pages & components
+* API routes
+* Material UI theme setup
+* reusable layout & sidebar
+* playground functionality
+* SEO configuration
+
+---
+if possible
+
+* animated hero section
+* copy success animations
+* dark/light theme persistence
+* search inside docs
+
+
