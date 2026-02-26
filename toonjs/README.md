@@ -3,6 +3,10 @@
 
 # 📦 toonkit
 
+![npm](https://img.shields.io/npm/v/toonkit)
+![downloads](https://img.shields.io/npm/dw/toonkit)
+![license](https://img.shields.io/npm/l/toonkit)
+
 **Typed Object Oriented Notation (TOON) parser & serializer**
 for frontend and backend JavaScript applications.
 

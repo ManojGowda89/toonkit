@@ -1,6 +1,6 @@
 {
   "name": "toonkit",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Typed Object Oriented Notation (TOON) parser and serializer for frontend and backend JavaScript applications. Lightweight, type-safe, schema-based alternative to JSON for APIs, microservices, and automation.",
 
   "main": "./index.cjs",
@@ -14,6 +14,14 @@
       "default": "./index.cjs"
     }
   },
+
+  "files": [
+    "index.cjs",
+    "index.mjs",
+    "index.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
 
   "keywords": [
     "toon",
@@ -35,10 +43,15 @@
     "data-transport",
     "rest-api",
     "automation",
-    "javascript"
+    "javascript",
+    "nodejs",
+    "nextjs",
+    "react",
+    "compression",
+    "fast-serialization"
   ],
 
-  "author": "Manoj Gowda (https://manojgowda.in)",
+  "author": "Manoj Gowda B R",
   "homepage": "https://toonkit.manojgowda.in",
 
   "repository": {
@@ -48,6 +61,11 @@
 
   "bugs": {
     "url": "https://github.com/ManojGowda89/toonkit/issues"
+  },
+
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/ManojGowda89"
   },
 
   "license": "MIT",
