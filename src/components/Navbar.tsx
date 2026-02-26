@@ -22,9 +22,9 @@ export default function Navbar() {
         <Button component={Link} href="/">Home</Button>
         <Button component={Link} href="/docs">Docs</Button>
         <Button component={Link} href="/playground">Playground</Button>
-        <Button component={Link} href="/api-simulator">
+        {/* <Button component={Link} href="/api-simulator">
           API Simulation
-        </Button>
+        </Button> */}
 
         {/* External Links */}
         <Button
