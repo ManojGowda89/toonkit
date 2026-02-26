@@ -1,42 +1,58 @@
 {
   "name": "toonkit",
-  "version": "1.0.1",
-  "description": "toonkit - Typed Object Oriented Notation (TOON) parser and serializer for frontend and backend JavaScript applications. Lightweight, type-safe, schema-based alternative to JSON for APIs, microservices, and automation.",
-  "main": "index.js",
-  "module": "index.js",
-  "type": "commonjs",
+  "version": "1.0.5",
+  "description": "Typed Object Oriented Notation (TOON) parser and serializer for frontend and backend JavaScript applications. Lightweight, type-safe, schema-based alternative to JSON for APIs, microservices, and automation.",
+
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
+
+  "exports": {
+    ".": {
+      "require": "./index.cjs",
+      "import": "./index.mjs",
+      "default": "./index.cjs"
+    }
+  },
+
   "keywords": [
     "toon",
     "toonkit",
     "typed-notation",
+    "typed-object-notation",
     "data-serialization",
     "serializer",
     "parser",
     "api-format",
     "data-format",
-    "lightweight",
     "json-alternative",
     "typed-json",
+    "lightweight",
     "express",
     "frontend",
     "backend",
     "microservices",
-    "pagination",
     "data-transport",
     "rest-api",
     "automation",
     "javascript"
   ],
+
   "author": "Manoj Gowda (https://manojgowda.in)",
   "homepage": "https://toonkit.manojgowda.in",
+
   "repository": {
     "type": "git",
     "url": "https://github.com/ManojGowda89/toonkit.git"
   },
+
   "bugs": {
     "url": "https://github.com/ManojGowda89/toonkit/issues"
   },
+
   "license": "MIT",
+  "sideEffects": false,
+
   "engines": {
     "node": ">=14"
   }

@@ -1,10 +1,6 @@
 /* =========================================
    TOONJS - Typed Object Oriented Notation
-   Full Production Version
-========================================= */
-
-/* =========================================
-   TYPE HELPERS
+   CommonJS Build
 ========================================= */
 
 function detectType(value) {
@@ -28,10 +24,6 @@ function castValue(value, type) {
   }
 }
 
-/* =========================================
-   JSON ➜ TOON
-========================================= */
-
 function jsonToToon(data) {
   if (!data || typeof data !== "object") {
     throw new Error("sendToon expects an object");
@@ -41,28 +33,18 @@ function jsonToToon(data) {
 
   for (const collection in data) {
     const value = data[collection];
-
     const records = Array.isArray(value) ? value : [value];
-
     if (!records.length) continue;
 
     const headers = Object.keys(records[0]);
-
-    const schema = headers
-      .map(h => `${h}:${detectType(records[0][h])}`)
-      .join(",");
-
+    const schema = headers.map(h => `${h}:${detectType(records[0][h])}`).join(",");
     const rows = records
       .map(r =>
-        headers
-          .map(h => {
-            const val = r[h];
-            if (typeof val === "object" && val !== null) {
-              return JSON.stringify(val);
-            }
-            return val;
-          })
-          .join(",")
+        headers.map(h => {
+          const val = r[h];
+          if (typeof val === "object" && val !== null) return JSON.stringify(val);
+          return val;
+        }).join(",")
       )
       .join("\n");
 
@@ -72,17 +54,12 @@ function jsonToToon(data) {
   return output.trim();
 }
 
-/* =========================================
-   TOON ➜ JSON
-========================================= */
-
 function toonToJson(input) {
   if (!input || typeof input !== "string") {
     throw new Error("receiveToon expects a string");
   }
 
   const lines = input.split("\n").map(l => l.trim());
-
   const result = {};
   let currentCollection = null;
   let headers = [];
@@ -91,101 +68,41 @@ function toonToJson(input) {
   lines.forEach(line => {
     if (!line) return;
 
-    // Schema line
     if (line.includes("{") && line.includes("}")) {
       currentCollection = line.split("{")[0].split("[")[0].trim();
-
-      const schemaParts = line
-        .split("{")[1]
-        .split("}")[0]
-        .split(",")
-        .map(s => s.trim());
-
+      const schemaParts = line.split("{")[1].split("}")[0].split(",").map(s => s.trim());
       headers = schemaParts.map(s => s.split(":")[0]);
       types = schemaParts.map(s => s.split(":")[1] || "s");
-
       result[currentCollection] = [];
       return;
     }
 
-    // Data rows
     if (currentCollection && line.includes(",")) {
       const values = line.split(",").map(v => v.trim());
-
       const obj = {};
-      headers.forEach((h, i) => {
-        obj[h] = castValue(values[i], types[i]);
-      });
-
+      headers.forEach((h, i) => { obj[h] = castValue(values[i], types[i]); });
       result[currentCollection].push(obj);
     }
   });
 
-  // Convert single record arrays to object
   for (const key in result) {
-    if (result[key].length === 1) {
-      result[key] = result[key][0];
-    }
+    if (result[key].length === 1) result[key] = result[key][0];
   }
 
   return result;
 }
 
-/* =========================================
-   FRONTEND FUNCTIONS
-========================================= */
+function sendToon(jsonData) { return jsonToToon(jsonData); }
+function receiveToon(toonString) { return toonToJson(toonString); }
 
-// JSON ➜ TOON
-function sendToon(jsonData) {
-  return jsonToToon(jsonData);
-}
-
-// TOON ➜ JSON
-function receiveToon(toonString) {
-  return toonToJson(toonString);
-}
-
-/* =========================================
-   BACKEND EXPRESS HELPERS
-========================================= */
-
-// Parse incoming request
 function reqGetToon(req) {
-  if (!req || !req.body) {
-    throw new Error("reqGetToon expects Express request with text body");
-  }
+  if (!req || !req.body) throw new Error("reqGetToon expects Express request with text body");
   return toonToJson(req.body);
 }
 
-// Send TOON response
 function resSendToon(res, jsonData) {
-  if (!res) {
-    throw new Error("resSendToon expects Express response object");
-  }
-  const toon = jsonToToon(jsonData);
-  res.type("text/plain").send(toon);
+  if (!res) throw new Error("resSendToon expects Express response object");
+  res.type("text/plain").send(jsonToToon(jsonData));
 }
 
-/* =========================================
-   EXPORTS (CommonJS + ESM)
-========================================= */
-
-const toonjs = {
-  sendToon,
-  receiveToon,
-  reqGetToon,
-  resSendToon
-};
-
-// CommonJS
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = toonjs;
-}
-
-// ES Modules
-export {
-  sendToon,
-  receiveToon,
-  reqGetToon,
-  resSendToon
-};
+module.exports = { sendToon, receiveToon, reqGetToon, resSendToon };
