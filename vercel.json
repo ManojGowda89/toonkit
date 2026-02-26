@@ -1,8 +1,6 @@
 {
   "framework": "nextjs",
-
   "cleanUrls": true,
-
   "headers": [
     {
       "source": "/(.*)",
@@ -24,14 +22,6 @@
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600" }
       ]
-    }
-  ],
-
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/",
-      "permanent": true
     }
   ]
 }
