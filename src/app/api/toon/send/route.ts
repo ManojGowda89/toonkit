@@ -1,11 +1,15 @@
-import { sendToon } from "toonkit";
+import { jsonToToon } from "toonkit";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const json = await req.json();
+    const obj = await req.json();
 
-    const toon = sendToon(json);
+    console.log("PARSED JSON:\n", obj);
+
+    const toon = jsonToToon(obj);
+
+    console.log("FORMATTED TOON:\n", toon);
 
     return new Response(toon, {
       status: 200,
@@ -13,10 +17,12 @@ export async function POST(req: NextRequest) {
         "Content-Type": "text/plain",
       },
     });
-  } catch (err: any) {
-    return new Response(
-      JSON.stringify({ error: err.message || "Invalid JSON" }),
-      { status: 400 }
+  } catch (err) {
+    console.error(err);
+
+    return Response.json(
+      { error: "JSON Conversion failed" },
+      { status: 500 }
     );
   }
 }

@@ -6,16 +6,6 @@ interface NavItem {
   label: string;
 }
 
-interface FeatureRow {
-  icon: string;
-  label: string;
-  desc: string;
-}
-
-interface TypeRow extends Array<string> {
-  0: string; 1: string; 2: string; 3: string;
-}
-
 interface SectionHeaderProps {
   id: string;
   icon: string;
@@ -182,16 +172,15 @@ const globalStyles = `
 `;
 
 const navItems: NavItem[] = [
-  { id: "intro", label: "Introduction" },
-  { id: "format", label: "TOON Format" },
-  { id: "types", label: "Data Types" },
+  { id: "intro", label: "Overview" },
   { id: "install", label: "Installation" },
-  { id: "frontend", label: "Frontend Usage" },
-  { id: "backend", label: "Backend Usage" },
+  { id: "import", label: "Import & Functions" },
+  { id: "toon-to-json", label: "toonToJson()" },
+  { id: "json-to-toon", label: "jsonToToon()" },
+  { id: "types", label: "Type Codes" },
+  { id: "express", label: "Express Example" },
   { id: "postman", label: "Postman Testing" },
-  { id: "examples", label: "Advanced Examples" },
   { id: "performance", label: "Performance" },
-  { id: "usecases", label: "Use Cases" },
 ];
 
 function SectionHeader({ id, icon, title, subtitle }: SectionHeaderProps) {
@@ -317,7 +306,7 @@ function PropTable({ rows }: PropTableProps) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "80px 100px 1fr 1fr",
+          gridTemplateColumns: "60px 100px 1fr 1fr",
           padding: "10px 20px",
           borderBottom: `1px solid ${theme.border}`,
           color: theme.textMuted,
@@ -328,9 +317,9 @@ function PropTable({ rows }: PropTableProps) {
         }}
       >
         <span>Code</span>
-        <span>Type</span>
+        <span>Meaning</span>
         <span>Example</span>
-        <span>Notes</span>
+        <span>Output</span>
       </div>
       {rows.map((row, i) => (
         <div
@@ -338,7 +327,7 @@ function PropTable({ rows }: PropTableProps) {
           className="type-row"
           style={{
             display: "grid",
-            gridTemplateColumns: "80px 100px 1fr 1fr",
+            gridTemplateColumns: "60px 100px 1fr 1fr",
             padding: "12px 20px",
             borderBottom: i < rows.length - 1 ? `1px solid ${theme.border}` : "none",
             transition: "background 0.1s",
@@ -373,8 +362,8 @@ function PropTable({ rows }: PropTableProps) {
 
 export default function ToonkitDocs() {
   const [activeSection, setActiveSection] = useState("intro");
-  const [tabFrontend, setTabFrontend] = useState("send");
-  const [tabBackend, setTabBackend] = useState("setup");
+  const [tabImport, setTabImport] = useState("esm");
+  const [tabExample, setTabExample] = useState("toon");
 
   const scrollTo = (id: any) => {
     setActiveSection(id);
@@ -399,7 +388,6 @@ export default function ToonkitDocs() {
             background: theme.bg,
           }}
         >
-          {/* Logo */}
           <div style={{ paddingLeft: 14, marginBottom: 32 }}>
             <div
               style={{
@@ -409,24 +397,7 @@ export default function ToonkitDocs() {
                 marginBottom: 6,
               }}
             >
-              {/* <div
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 8,
-                  background: `linear-gradient(135deg, ${theme.accent}, ${theme.purple})`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 16,
-                  fontWeight: 800,
-                  color: "#000",
-                  fontFamily: "'Space Mono', monospace",
-                }}
-              >
-                T
-              </div> */}
-              {/* <span
+              <span
                 style={{
                   fontWeight: 800,
                   fontSize: 18,
@@ -435,18 +406,34 @@ export default function ToonkitDocs() {
                 }}
               >
                 toonkit
-              </span> */}
-            </div>
-            {/* <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span className="glow-dot" />
-              <span style={{ fontSize: 11, color: theme.textMuted, fontFamily: "'Space Mono', monospace" }}>
-                v1.x • MIT
               </span>
-            </div> */}
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span className="glow-dot" />
+              <span
+                style={{
+                  fontSize: 11,
+                  color: theme.textMuted,
+                  fontFamily: "'Space Mono', monospace",
+                }}
+              >
+                v2.x • MIT
+              </span>
+            </div>
           </div>
 
-          <div style={{ fontSize: 10, color: theme.textMuted, paddingLeft: 14, marginBottom: 8, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "'Space Mono', monospace" }}>
-            Docs
+          <div
+            style={{
+              fontSize: 10,
+              color: theme.textMuted,
+              paddingLeft: 14,
+              marginBottom: 8,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              fontFamily: "'Space Mono', monospace",
+            }}
+          >
+            Documentation
           </div>
           <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {navItems.map((item) => (
@@ -492,7 +479,7 @@ export default function ToonkitDocs() {
                 fontFamily: "'Space Mono', monospace",
               }}
             >
-              ↗ NPM Docs
+              ↗ NPM Package
             </a>
           </div>
         </aside>
@@ -534,15 +521,19 @@ export default function ToonkitDocs() {
             />
             <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
               {[
-                { label: "Typed", color: theme.accent },
+                { label: "Type-Safe", color: theme.accent },
                 { label: "Compact", color: theme.green },
-                { label: "API-First", color: theme.purple },
+                { label: "Human-Readable", color: theme.purple },
                 { label: "MIT", color: theme.orange },
               ].map((b) => (
                 <span
                   key={b.label}
                   className="badge"
-                  style={{ background: `${b.color}15`, color: b.color, border: `1px solid ${b.color}33` }}
+                  style={{
+                    background: `${b.color}15`,
+                    color: b.color,
+                    border: `1px solid ${b.color}33`,
+                  }}
                 >
                   {b.label}
                 </span>
@@ -566,14 +557,15 @@ export default function ToonkitDocs() {
               style={{
                 fontSize: 18,
                 color: theme.textDim,
-                maxWidth: 480,
+                maxWidth: 600,
                 lineHeight: 1.6,
                 marginBottom: 24,
               }}
             >
               A parser & serializer for{" "}
-              <span style={{ color: theme.accent, fontWeight: 700 }}>TOON</span> —
-              Typed Object Oriented Notation. Smaller payloads, human-readable, schema-first.
+              <span style={{ color: theme.accent, fontWeight: 700 }}>TOON</span> — Typed
+              Object Oriented Notation. Transform JSON to compact TOON format and back with
+              built-in type awareness.
             </p>
             <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 13, color: theme.textMuted }}>
               <span style={{ color: theme.green }}>$</span>{" "}
@@ -581,27 +573,47 @@ export default function ToonkitDocs() {
             </div>
           </div>
 
-          {/* ── INTRODUCTION ── */}
+          {/* ── OVERVIEW ── */}
           <section id="intro" className="section-anim" style={{ marginBottom: 64 }}>
             <SectionHeader
               id="intro"
-              icon="🧠"
-              title="Introduction"
-              subtitle="What is TOON and why does it exist?"
+              icon="📦"
+              title="What is toonkit?"
+              subtitle="Why TOON? Why this library?"
             />
             <p style={{ fontSize: 15, color: theme.textDim, lineHeight: 1.8, marginBottom: 20 }}>
-              <strong style={{ color: theme.text }}>TOON</strong> stands for{" "}
-              <strong style={{ color: theme.accent }}>Typed Object Oriented Notation</strong>. It is a
-              lightweight, human-readable data format built as a practical alternative to JSON for
-              API communication — particularly suited for structured, multi-resource responses.
+              <strong style={{ color: theme.text }}>toonkit</strong> provides two core functions:
             </p>
-            <p style={{ fontSize: 15, color: theme.textDim, lineHeight: 1.8, marginBottom: 24 }}>
-              JSON is powerful but carries heavy syntactic overhead: repeated keys, nested braces,
-              and no native type schema. TOON solves this by separating the{" "}
-              <span style={{ color: theme.yellow }}>schema definition</span> from the{" "}
-              <span style={{ color: theme.green }}>data rows</span>, like a miniature typed table format —
-              resulting in smaller payloads and faster parsing.
+            <ul style={{ fontSize: 15, color: theme.textDim, lineHeight: 1.8, marginBottom: 24, paddingLeft: 20 }}>
+              <li style={{ marginBottom: 12 }}>
+                <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace", fontWeight: 700 }}>
+                  toonToJson(input: string)
+                </code>{" "}
+                — Parses TOON text into JavaScript objects
+              </li>
+              <li>
+                <code
+                  style={{
+                    color: theme.accent,
+                    fontFamily: "'Space Mono', monospace",
+                    fontWeight: 700,
+                  }}
+                >
+                  jsonToToon(obj: any)
+                </code>{" "}
+                — Serializes JavaScript objects to TOON format
+              </li>
+            </ul>
+
+            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16 }}>
+              Why TOON?
+            </h3>
+            <p style={{ fontSize: 14, color: theme.textDim, lineHeight: 1.7, marginBottom: 24 }}>
+              JSON is powerful but verbose. TOON solves this by separating the schema definition
+              from the data rows — like a typed table format. Result: smaller payloads, faster
+              parsing, and type safety built in.
             </p>
+
             <div
               style={{
                 display: "grid",
@@ -611,12 +623,10 @@ export default function ToonkitDocs() {
               }}
             >
               {[
-                { icon: "✅", label: "Smaller payloads", desc: "No repeated key names in data rows" },
-                { icon: "🔤", label: "Human-readable", desc: "Plain text, editable in any editor" },
-                { icon: "🏷️", label: "Type-safe", desc: "Schema declares types per field" },
-                { icon: "📦", label: "Multi-resource", desc: "Multiple collections in one response" },
-                { icon: "⚡", label: "Fast parsing", desc: "Less to parse, simpler structure" },
-                { icon: "🔗", label: "API-friendly", desc: "Works perfectly with REST APIs" },
+                { icon: "📉", label: "40-60% smaller", desc: "No repeated key names" },
+                { icon: "🔤", label: "Human-readable", desc: "Plain text, easy to edit" },
+                { icon: "🏷️", label: "Type-safe", desc: "Schema declares all types" },
+                { icon: "⚡", label: "Fast parsing", desc: "Minimal overhead structure" },
               ].map((f) => (
                 <div
                   key={f.label}
@@ -632,7 +642,14 @@ export default function ToonkitDocs() {
                 >
                   <span style={{ fontSize: 20 }}>{f.icon}</span>
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: 14, color: theme.text, marginBottom: 4 }}>
+                    <div
+                      style={{
+                        fontWeight: 700,
+                        fontSize: 14,
+                        color: theme.text,
+                        marginBottom: 4,
+                      }}
+                    >
                       {f.label}
                     </div>
                     <div style={{ fontSize: 12, color: theme.textMuted }}>{f.desc}</div>
@@ -640,236 +657,46 @@ export default function ToonkitDocs() {
                 </div>
               ))}
             </div>
-            <InfoCard accent={theme.purple}>
-              <strong style={{ color: theme.purple }}>toonkit</strong> is the JavaScript library that
-              implements TOON. It provides four core functions:{" "}
-              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>sendToon</code>,{" "}
-              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>receiveToon</code>,{" "}
-              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>reqGetToon</code>, and{" "}
-              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>resSendToon</code> —
-              covering both client and server needs.
-            </InfoCard>
-          </section>
-
-          {/* ── TOON FORMAT ── */}
-          <section id="format" className="section-anim" style={{ marginBottom: 64 }}>
-            <SectionHeader
-              id="format"
-              icon="🧾"
-              title="The TOON Format"
-              subtitle="Understanding TOON syntax, anatomy, and parsing rules"
-            />
-
-            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 12 }}>
-              Anatomy of a TOON string
-            </h3>
-            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 20, lineHeight: 1.7 }}>
-              A TOON document is made up of one or more{" "}
-              <strong style={{ color: theme.text }}>resource blocks</strong>. Each block has:
-            </p>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 12,
-                marginBottom: 28,
-              }}
-            >
-              {[
-                {
-                  part: "name",
-                  syntax: "employees",
-                  color: theme.accent,
-                  desc: "The resource/collection name. Becomes the key in the parsed output.",
-                },
-                {
-                  part: "count (optional)",
-                  syntax: "[2]",
-                  color: theme.yellow,
-                  desc: "Number of data rows. If [1], parses as object (not array). If [2+], parses as array.",
-                },
-                {
-                  part: "schema",
-                  syntax: "{id:n,name:s}",
-                  color: theme.purple,
-                  desc: "Field names with their types (n=number, s=string, b=boolean, etc.).",
-                },
-                {
-                  part: "separator",
-                  syntax: ":",
-                  color: theme.orange,
-                  desc: "Colon separates the header declaration from the data rows.",
-                },
-                {
-                  part: "rows",
-                  syntax: "1,Riya",
-                  color: theme.green,
-                  desc: "Comma-separated values. One row per line, matching the schema order.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.part}
-                  style={{
-                    display: "flex",
-                    gap: 16,
-                    background: theme.surface,
-                    border: `1px solid ${theme.border}`,
-                    borderRadius: 8,
-                    padding: "12px 16px",
-                    alignItems: "center",
-                  }}
-                >
-                  <code
-                    style={{
-                      fontFamily: "'Space Mono', monospace",
-                      fontSize: 14,
-                      color: item.color,
-                      fontWeight: 700,
-                      minWidth: 130,
-                    }}
-                  >
-                    {item.syntax}
-                  </code>
-                  <div>
-                    <span
-                      style={{
-                        fontSize: 11,
-                        color: item.color,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.1em",
-                        fontFamily: "'Space Mono', monospace",
-                        marginRight: 8,
-                      }}
-                    >
-                      [{item.part}]
-                    </span>
-                    <span style={{ fontSize: 13, color: theme.textDim }}>{item.desc}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16 }}>
-              Full Example — TOON vs JSON
-            </h3>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 }}>
-              <div>
-                <CodeBlock label="TOON Input">{`<span class="toon-key">meta</span>{<span class="toon-type">page:n,limit:n,total:n</span>}:
-<span class="toon-val">1,10,200</span>
-
-<span class="toon-key">employees</span>[<span class="num">2</span>]{<span class="toon-type">id:n,name:s,salary:n,active:b</span>}:
-<span class="toon-val">1,Riya,90000,true</span>
-<span class="toon-val">2,John,80000,false</span>
-
-<span class="toon-key">departments</span>[<span class="num">1</span>]{<span class="toon-type">id:s,title:s</span>}:
-<span class="toon-val">10,Engineering</span>`}</CodeBlock>
-              </div>
-              <div>
-                <CodeBlock label="Parsed JSON">{`{
-  <span class="str">"meta"</span>: {
-    <span class="str">"page"</span>: <span class="num">1</span>,
-    <span class="str">"limit"</span>: <span class="num">10</span>,
-    <span class="str">"total"</span>: <span class="num">200</span>
-  },
-  <span class="str">"employees"</span>: [
-    { <span class="str">"id"</span>: <span class="num">1</span>, <span class="str">"name"</span>: <span class="str">"Riya"</span>,
-      <span class="str">"salary"</span>: <span class="num">90000</span>, <span class="str">"active"</span>: <span class="kw">true</span> },
-    { <span class="str">"id"</span>: <span class="num">2</span>, <span class="str">"name"</span>: <span class="str">"John"</span>,
-      <span class="str">"salary"</span>: <span class="num">80000</span>, <span class="str">"active"</span>: <span class="kw">false</span> }
-  ],
-  <span class="str">"departments"</span>: {
-    <span class="str">"id"</span>: <span class="str">"10"</span>,
-    <span class="str">"title"</span>: <span class="str">"Engineering"</span>
-  }
-}`}</CodeBlock>
-              </div>
-            </div>
-
-            <InfoCard accent={theme.yellow}>
-              <strong style={{ color: theme.yellow }}>Count rules:</strong> When the count is{" "}
-              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>[1]</code>, the parsed
-              output is a plain <strong>object</strong>. When the count is{" "}
-              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>[2]</code> or
-              higher, the parsed output is an <strong>array</strong>. When no count is specified (like{" "}
-              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>meta{`{…}`}</code>), it
-              also parses as an object.
-            </InfoCard>
-          </section>
-
-          {/* ── DATA TYPES ── */}
-          <section id="types" className="section-anim" style={{ marginBottom: 64 }}>
-            <SectionHeader
-              id="types"
-              icon="🧬"
-              title="Data Types"
-              subtitle="Every supported type code, what it maps to, and how to use it"
-            />
-            <PropTable
-              rows={[
-                ["n", "number", "25", "Integers and floats. 90000, 3.14, -7"],
-                ["s", "string", "Manoj", "Plain text. Quotes not needed in TOON rows."],
-                ["b", "boolean", "true / false", "Must be exactly true or false (lowercase)."],
-                ["nl", "null", "null", "Explicit null value. Maps to JS null."],
-                ["j", "JSON", '{"x":1}', "Embedded JSON object. Must be valid JSON."],
-                ["a", "array", '["a","b"]', "Embedded JSON array. Must be valid JSON array."],
-              ]}
-            />
-            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16 }}>
-              All-types example
-            </h3>
-            <CodeBlock label="TOON — All Types">{`<span class="toon-key">sample</span>{<span class="toon-type">age:n,name:s,active:b,data:j,tags:a,value:nl</span>}:
-<span class="toon-val">25,Manoj,true,{"x":1},["a","b"],null</span>`}</CodeBlock>
-            <CodeBlock label="Parsed Output">{`{
-  <span class="str">"sample"</span>: {
-    <span class="str">"age"</span>:    <span class="num">25</span>,
-    <span class="str">"name"</span>:   <span class="str">"Manoj"</span>,
-    <span class="str">"active"</span>: <span class="kw">true</span>,
-    <span class="str">"data"</span>:   { <span class="str">"x"</span>: <span class="num">1</span> },
-    <span class="str">"tags"</span>:   [<span class="str">"a"</span>, <span class="str">"b"</span>],
-    <span class="str">"value"</span>:  <span class="kw">null</span>
-  }
-}`}</CodeBlock>
           </section>
 
           {/* ── INSTALLATION ── */}
           <section id="install" className="section-anim" style={{ marginBottom: 64 }}>
-            <SectionHeader
-              id="install"
-              icon="📥"
-              title="Installation"
-              subtitle="Getting toonkit into your project"
-            />
+            <SectionHeader id="install" icon="📥" title="Installation" />
+
             <CodeBlock label="npm">{`<span class="fn">npm</span> install toonkit`}</CodeBlock>
             <CodeBlock label="yarn">{`<span class="fn">yarn</span> add toonkit`}</CodeBlock>
             <CodeBlock label="pnpm">{`<span class="fn">pnpm</span> add toonkit`}</CodeBlock>
+          </section>
 
-            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16, marginTop: 32 }}>
-              Importing
-            </h3>
+          {/* ── IMPORT & FUNCTIONS ── */}
+          <section id="import" className="section-anim" style={{ marginBottom: 64 }}>
+            <SectionHeader id="import" icon="🔗" title="Import & Functions" />
+
             <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
               <button
-                className={`tab-btn ${tabFrontend === "cjs" ? "active" : ""}`}
-                onClick={() => setTabFrontend("cjs")}
-              >
-                CommonJS
-              </button>
-              <button
-                className={`tab-btn ${tabFrontend !== "cjs" ? "active" : ""}`}
-                onClick={() => setTabFrontend("esm")}
+                className={`tab-btn ${tabImport === "esm" ? "active" : ""}`}
+                onClick={() => setTabImport("esm")}
               >
                 ES Modules
               </button>
+              <button
+                className={`tab-btn ${tabImport === "cjs" ? "active" : ""}`}
+                onClick={() => setTabImport("cjs")}
+              >
+                CommonJS
+              </button>
             </div>
-            {tabFrontend === "cjs" ? (
-              <CodeBlock label="CommonJS (Node.js / require)">{`<span class="kw">const</span> { <span class="fn">sendToon</span>, <span class="fn">receiveToon</span>, <span class="fn">reqGetToon</span>, <span class="fn">resSendToon</span> }
-  = <span class="fn">require</span>(<span class="str">"toonkit"</span>);`}</CodeBlock>
-            ) : (
-              <CodeBlock label="ES Modules (import)">{`<span class="kw">import</span> { <span class="fn">sendToon</span>, <span class="fn">receiveToon</span>, <span class="fn">reqGetToon</span>, <span class="fn">resSendToon</span> }
+
+            {tabImport === "esm" ? (
+              <CodeBlock label="ES Module Import">{`<span class="kw">import</span> { <span class="fn">toonToJson</span>, <span class="fn">jsonToToon</span> }
   <span class="kw">from</span> <span class="str">"toonkit"</span>;`}</CodeBlock>
+            ) : (
+              <CodeBlock label="CommonJS Require">{`<span class="kw">const</span> { <span class="fn">toonToJson</span>, <span class="fn">jsonToToon</span> }
+  = <span class="fn">require</span>(<span class="str">"toonkit"</span>);`}</CodeBlock>
             )}
 
             <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16, marginTop: 28 }}>
-              Exported Functions
+              Function Signatures
             </h3>
             <div
               style={{
@@ -881,279 +708,432 @@ export default function ToonkitDocs() {
             >
               {[
                 {
-                  fn: "sendToon(obj)",
-                  use: "Frontend",
-                  desc: "Converts a JavaScript object/array into a TOON-formatted string for sending.",
+                  fn: "toonToJson(input: string)",
+                  desc: "Parses TOON text and returns a JavaScript object with all types resolved.",
                 },
                 {
-                  fn: "receiveToon(str)",
-                  use: "Frontend",
-                  desc: "Parses a TOON string back into a JavaScript object/array.",
+                  fn: "jsonToToon(obj: any)",
+                  desc: "Converts a JavaScript object/array into TOON format string.",
                 },
-                {
-                  fn: "reqGetToon(req)",
-                  use: "Backend",
-                  desc: "Reads and parses the TOON body from an Express request object.",
-                },
-                {
-                  fn: "resSendToon(res, data)",
-                  use: "Backend",
-                  desc: "Serializes data to TOON and sends it as the Express response.",
-                },
-              ].map((item, i, arr) => (
+              ].map((item, i) => (
                 <div
                   key={item.fn}
-                  className="type-row"
                   style={{
-                    display: "grid",
-                    gridTemplateColumns: "220px 90px 1fr",
-                    padding: "14px 20px",
-                    borderBottom: i < arr.length - 1 ? `1px solid ${theme.border}` : "none",
-                    alignItems: "center",
-                    gap: 16,
-                    transition: "background 0.1s",
+                    padding: "16px 20px",
+                    borderBottom: i === 0 ? `1px solid ${theme.border}` : "none",
                   }}
                 >
                   <code
                     style={{
                       fontFamily: "'Space Mono', monospace",
                       color: theme.accent,
-                      fontSize: 12,
+                      fontSize: 13,
+                      fontWeight: 700,
+                      display: "block",
+                      marginBottom: 8,
                     }}
                   >
                     {item.fn}
                   </code>
-                  <span
-                    className="badge"
-                    style={{
-                      background: item.use === "Frontend" ? `${theme.purple}22` : `${theme.green}22`,
-                      color: item.use === "Frontend" ? theme.purple : theme.green,
-                      border: `1px solid ${item.use === "Frontend" ? theme.purple : theme.green}44`,
-                    }}
-                  >
-                    {item.use}
-                  </span>
                   <span style={{ fontSize: 13, color: theme.textDim }}>{item.desc}</span>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* ── FRONTEND USAGE ── */}
-          <section id="frontend" className="section-anim" style={{ marginBottom: 64 }}>
+          {/* ── toonToJson ── */}
+          <section id="toon-to-json" className="section-anim" style={{ marginBottom: 64 }}>
             <SectionHeader
-              id="frontend"
-              icon="🌐"
-              title="Frontend Usage"
-              subtitle="Sending and receiving TOON data from the browser"
+              id="toon-to-json"
+              icon="🔄"
+              title="toonToJson()"
+              subtitle="Parse TOON strings into JavaScript objects"
             />
-            <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-              {["send", "receive", "full"].map((t) => (
-                <button
-                  key={t}
-                  className={`tab-btn ${tabFrontend === t ? "active" : ""}`}
-                  onClick={() => setTabFrontend(t)}
-                >
-                  {t === "send" ? "JSON → TOON" : t === "receive" ? "TOON → JSON" : "Full Flow"}
-                </button>
-              ))}
-            </div>
 
-            {tabFrontend === "send" && (
-              <>
-                <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
-                  Use <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>sendToon()</code>{" "}
-                  to convert your JavaScript object into a TOON string before sending it to the server.
-                  Always set <code style={{ color: theme.yellow, fontFamily: "'Space Mono', monospace" }}>Content-Type: text/plain</code>.
-                </p>
-                <CodeBlock label="sendToon — JSON to TOON">{`<span class="kw">import</span> { <span class="fn">sendToon</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
+              This function reads TOON-formatted text and automatically converts it to a
+              properly-typed JavaScript object. Type codes in the schema determine how each
+              value is parsed.
+            </p>
 
-<span class="kw">const</span> payload = <span class="fn">sendToon</span>({
-  employees: [
-    { id: <span class="num">1</span>, name: <span class="str">"Riya"</span>, salary: <span class="num">90000</span>, active: <span class="kw">true</span> },
-    { id: <span class="num">2</span>, name: <span class="str">"John"</span>, salary: <span class="num">80000</span>, active: <span class="kw">false</span> }
-  ]
-});
+            <CodeBlock label="Usage">{`<span class="kw">const</span> toonString = <span class="str">\`
+device_id[<span class="num">1</span>]{<span class="num">0</span>:s}:
+DEVICE_PRO_01
 
-<span class="comment">// payload is now a compact TOON string:</span>
-<span class="comment">// employees[2]{id:n,name:s,salary:n,active:b}:</span>
-<span class="comment">// 1,Riya,90000,true</span>
-<span class="comment">// 2,John,80000,false</span>`}</CodeBlock>
-                <CodeBlock label="Send to API via fetch">{`<span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"/api/employees"</span>, {
-  method: <span class="str">"POST"</span>,
-  headers: {
-    <span class="str">"Content-Type"</span>: <span class="str">"text/plain"</span>  <span class="comment">// ← Required!</span>
-  },
-  body: payload  <span class="comment">// TOON string</span>
-});`}</CodeBlock>
-              </>
-            )}
+battery[<span class="num">1</span>]{<span class="num">0</span>:n}:
+<span class="num">87</span>
 
-            {tabFrontend === "receive" && (
-              <>
-                <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
-                  Use <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>receiveToon()</code>{" "}
-                  to parse a TOON response string back into a usable JavaScript object.
-                </p>
-                <CodeBlock label="receiveToon — TOON to JSON">{`<span class="kw">import</span> { <span class="fn">receiveToon</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
+is_active[<span class="num">1</span>]{<span class="num">0</span>:b}:
+true
+\`</span>;
 
-<span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"/api/employees"</span>);
+<span class="kw">const</span> json = <span class="fn">toonToJson</span>(toonString);
+<span class="comment">// json = { device_id: "DEVICE_PRO_01", battery: 87, is_active: true }</span>`}</CodeBlock>
 
-<span class="comment">// Read raw text — NOT res.json()</span>
-<span class="kw">const</span> text = <span class="kw">await</span> res.<span class="fn">text</span>();
+            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16 }}>
+              Type Codes Reference
+            </h3>
+            <PropTable
+              rows={[
+                ["s", "string", `Manoj`, `"Manoj"`],
+                ["n", "number", `36.7`, `36.7`],
+                ["b", "boolean", `true`, `true`],
+                ["nl", "null", `null`, `null`],
+                ["j", "JSON object", `{"a":1}`, `{ a: 1 }`],
+                ["a", "array", `[1,2,3]`, `[1,2,3]`],
+                ["td", "text/date", `03042026120000`, `"03042026120000"`],
+              ]}
+            />
 
-<span class="kw">const</span> data = <span class="fn">receiveToon</span>(text);
+            <InfoCard accent={theme.yellow}>
+              <strong style={{ color: theme.yellow }}>Note:</strong> Type code{" "}
+              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>j</code> and{" "}
+              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>a</code> must contain
+              valid JSON. Use <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>td</code>{" "}
+              for raw text that shouldn't be parsed.
+            </InfoCard>
 
-console.<span class="fn">log</span>(data.employees);
-<span class="comment">// → [{ id: 1, name: "Riya", ... }, ...]</span>`}</CodeBlock>
-                <InfoCard>
-                  Always use <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>res.text()</code>{" "}
-                  (not <code style={{ color: theme.orange, fontFamily: "'Space Mono', monospace" }}>res.json()</code>)
-                  when expecting a TOON response. TOON is plain text, not JSON.
-                </InfoCard>
-              </>
-            )}
+            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16, marginTop: 32 }}>
+              Complete Example
+            </h3>
+            <CodeBlock label="TOON Input">{`<span class="toon-key">device_id</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">s</span>}:
+<span class="toon-val">DEVICE_PRO_01</span>
 
-            {tabFrontend === "full" && (
-              <CodeBlock label="Complete Frontend Flow">{`<span class="kw">import</span> { <span class="fn">sendToon</span>, <span class="fn">receiveToon</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
+<span class="toon-key">battery</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">n</span>}:
+<span class="toon-val">87</span>
 
-<span class="kw">async function</span> <span class="fn">createEmployees</span>() {
-  <span class="comment">// 1. Prepare data as TOON</span>
-  <span class="kw">const</span> payload = <span class="fn">sendToon</span>({
-    employees: [
-      { id: <span class="num">1</span>, name: <span class="str">"Riya"</span>, salary: <span class="num">90000</span>, active: <span class="kw">true</span> }
-    ]
-  });
+<span class="toon-key">temperature</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">n</span>}:
+<span class="toon-val">36.7</span>
 
-  <span class="comment">// 2. POST to API</span>
-  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"/api/employees"</span>, {
-    method: <span class="str">"POST"</span>,
-    headers: { <span class="str">"Content-Type"</span>: <span class="str">"text/plain"</span> },
-    body: payload
-  });
+<span class="toon-key">is_active</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">b</span>}:
+<span class="toon-val">true</span>
 
-  <span class="comment">// 3. Read TOON response as text</span>
-  <span class="kw">const</span> text = <span class="kw">await</span> res.<span class="fn">text</span>();
+<span class="toon-key">last_error</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">nl</span>}:
+<span class="toon-val">null</span>
 
-  <span class="comment">// 4. Parse back to JS</span>
-  <span class="kw">const</span> data = <span class="fn">receiveToon</span>(text);
-  console.<span class="fn">log</span>(data);
+<span class="toon-key">location</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">j</span>}:
+<span class="toon-val">{"lat":12.9716,"lng":77.5946}</span>
+
+<span class="toon-key">tags</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">a</span>}:
+<span class="toon-val">["iot","health","tracker"]</span>
+
+<span class="toon-key">created_at</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">td</span>}:
+<span class="toon-val">03042026120000</span>`}</CodeBlock>
+
+            <CodeBlock label="JavaScript Output">{`{
+  <span class="str">device_id</span>: <span class="str">"DEVICE_PRO_01"</span>,
+  <span class="str">battery</span>: <span class="num">87</span>,
+  <span class="str">temperature</span>: <span class="num">36.7</span>,
+  <span class="str">is_active</span>: <span class="kw">true</span>,
+  <span class="str">last_error</span>: <span class="kw">null</span>,
+  <span class="str">location</span>: { <span class="str">lat</span>: <span class="num">12.9716</span>, <span class="str">lng</span>: <span class="num">77.5946</span> },
+  <span class="str">tags</span>: [<span class="str">"iot"</span>, <span class="str">"health"</span>, <span class="str">"tracker"</span>],
+  <span class="str">created_at</span>: <span class="str">"03042026120000"</span>
 }`}</CodeBlock>
-            )}
           </section>
 
-          {/* ── BACKEND USAGE ── */}
-          <section id="backend" className="section-anim" style={{ marginBottom: 64 }}>
+          {/* ── jsonToToon ── */}
+          <section id="json-to-toon" className="section-anim" style={{ marginBottom: 64 }}>
             <SectionHeader
-              id="backend"
-              icon="🖥"
-              title="Backend Usage (Express)"
-              subtitle="Parsing TOON requests and sending TOON responses in Node.js"
+              id="json-to-toon"
+              icon="🔄"
+              title="jsonToToon()"
+              subtitle="Convert JavaScript objects to TOON format"
             />
-            <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-              {["setup", "parse", "respond", "full"].map((t) => (
+
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
+              This function inspects your JavaScript object and automatically detects the type
+              of each value ({`null`}, string, number, boolean, array, object). It then generates
+              the appropriate TOON-formatted string.
+            </p>
+
+            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16 }}>
+              Type Detection Rules
+            </h3>
+            <div style={{ background: theme.surface, borderRadius: 10, padding: 20, marginBottom: 24 }}>
+              <ul style={{ fontSize: 13, color: theme.textDim, lineHeight: 1.8 }}>
+                <li>
+                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>null</code> →{" "}
+                  <strong>nl</strong>
+                </li>
+                <li>
+                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>string</code> →{" "}
+                  <strong>s</strong>
+                </li>
+                <li>
+                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>number</code> →{" "}
+                  <strong>n</strong>
+                </li>
+                <li>
+                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>boolean</code> →{" "}
+                  <strong>b</strong>
+                </li>
+                <li>
+                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>Array</code> →{" "}
+                  <strong>a</strong>
+                </li>
+                <li>
+                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>Object</code> →{" "}
+                  <strong>j</strong> (JSON)
+                </li>
+              </ul>
+            </div>
+
+            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16 }}>
+              Example
+            </h3>
+            <CodeBlock label="JavaScript Input">{`<span class="kw">const</span> obj = {
+  device_id: <span class="str">"DEVICE_PRO_01"</span>,
+  battery: <span class="num">87</span>,
+  temperature: <span class="num">36.7</span>,
+  is_active: <span class="kw">true</span>,
+  last_error: <span class="kw">null</span>,
+  location: { <span class="str">lat</span>: <span class="num">12.9716</span>, <span class="str">lng</span>: <span class="num">77.5946</span> },
+  tags: [<span class="str">"iot"</span>, <span class="str">"health"</span>, <span class="str">"tracker"</span>]
+};
+
+<span class="kw">const</span> toon = <span class="fn">jsonToToon</span>(obj);`}</CodeBlock>
+
+            <CodeBlock label="TOON Output">{`<span class="toon-key">device_id</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">s</span>}:
+<span class="toon-val">DEVICE_PRO_01</span>
+
+<span class="toon-key">battery</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">n</span>}:
+<span class="toon-val">87</span>
+
+<span class="toon-key">temperature</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">n</span>}:
+<span class="toon-val">36.7</span>
+
+<span class="toon-key">is_active</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">b</span>}:
+<span class="toon-val">true</span>
+
+<span class="toon-key">last_error</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">nl</span>}:
+<span class="toon-val">null</span>
+
+<span class="toon-key">location</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">j</span>}:
+<span class="toon-val">{"lat":12.9716,"lng":77.5946}</span>
+
+<span class="toon-key">tags</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">a</span>}:
+<span class="toon-val">["iot","health","tracker"]</span>`}</CodeBlock>
+          </section>
+
+          {/* ── TYPE CODES ── */}
+          <section id="types" className="section-anim" style={{ marginBottom: 64 }}>
+            <SectionHeader
+              id="types"
+              icon="🧬"
+              title="Type Codes Reference"
+              subtitle="Complete guide to all supported data types"
+            />
+
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 20, lineHeight: 1.7 }}>
+              TOON uses single or two-letter codes to declare the type of each field. This
+              allows{" "}
+              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>
+                toonToJson
+              </code>{" "}
+              to parse values correctly and{" "}
+              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>
+                jsonToToon
+              </code>{" "}
+              to detect types automatically.
+            </p>
+
+            <div
+              style={{
+                background: theme.surface,
+                border: `1px solid ${theme.border}`,
+                borderRadius: 10,
+                overflow: "hidden",
+              }}
+            >
+              {[
+                { code: "s", type: "String", example: "Manoj", note: "Plain text, no special escaping needed" },
+                { code: "n", type: "Number", example: "87 or 36.7", note: "Integers and floats" },
+                { code: "b", type: "Boolean", example: "true or false", note: "Lowercase only, case-sensitive" },
+                { code: "nl", type: "Null", example: "null", note: "Represents null/undefined values" },
+                { code: "j", type: "JSON Object", example: '{"a":1}', note: "Valid JSON object, auto-parsed" },
+                { code: "a", type: "Array", example: '[1,"a",true]', note: "Valid JSON array, auto-parsed" },
+                {
+                  code: "td",
+                  type: "Text/Date",
+                  example: "03042026120000",
+                  note: "Raw text, no parsing (good for date strings)",
+                },
+              ].map((item, i, arr) => (
+                <div
+                  key={item.code}
+                  style={{
+                    padding: "14px 20px",
+                    borderBottom: i < arr.length - 1 ? `1px solid ${theme.border}` : "none",
+                    display: "grid",
+                    gridTemplateColumns: "60px 140px 1fr 1fr",
+                    gap: 16,
+                    alignItems: "center",
+                  }}
+                >
+                  <code
+                    style={{
+                      fontFamily: "'Space Mono', monospace",
+                      color: theme.accent,
+                      fontWeight: 700,
+                      fontSize: 13,
+                    }}
+                  >
+                    {item.code}
+                  </code>
+                  <span style={{ fontSize: 13, color: theme.purple, fontWeight: 600 }}>{item.type}</span>
+                  <code style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: theme.green }}>
+                    {item.example}
+                  </code>
+                  <span style={{ fontSize: 12, color: theme.textDim }}>{item.note}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ── EXPRESS ── */}
+          <section id="express" className="section-anim" style={{ marginBottom: 64 }}>
+            <SectionHeader
+              id="express"
+              icon="🖥"
+              title="Express.js Integration"
+              subtitle="Using toonkit in Node.js / Express APIs"
+            />
+
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 20, lineHeight: 1.7 }}>
+              toonkit works seamlessly with Express. Use{" "}
+              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>
+                express.text()
+              </code>{" "}
+              middleware to accept TOON payloads and respond with TOON strings.
+            </p>
+
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              {["setup", "receive", "send", "full"].map((t) => (
                 <button
                   key={t}
-                  className={`tab-btn ${tabBackend === t ? "active" : ""}`}
-                  onClick={() => setTabBackend(t)}
+                  className={`tab-btn ${tabExample === t ? "active" : ""}`}
+                  onClick={() => setTabExample(t)}
                 >
-                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                  {t === "setup"
+                    ? "Setup"
+                    : t === "receive"
+                      ? "Receive TOON"
+                      : t === "send"
+                        ? "Send TOON"
+                        : "Complete Route"}
                 </button>
               ))}
             </div>
 
-            {tabBackend === "setup" && (
+            {tabExample === "setup" && (
               <>
-                <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
-                  Before toonkit can parse the request body, Express must be configured to read
-                  raw text bodies using{" "}
-                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>express.text()</code>.
-                  Without this middleware, <code style={{ color: theme.orange, fontFamily: "'Space Mono', monospace" }}>req.body</code>{" "}
-                  will be undefined.
+                <p style={{ fontSize: 13, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
+                  Configure Express to accept raw text bodies using the{" "}
+                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>
+                    text()
+                  </code>{" "}
+                  middleware.
                 </p>
-                <CodeBlock label="Express Setup">{`<span class="kw">const</span> express = <span class="fn">require</span>(<span class="str">"express"</span>);
-<span class="kw">const</span> { <span class="fn">reqGetToon</span>, <span class="fn">resSendToon</span> } = <span class="fn">require</span>(<span class="str">"toonkit"</span>);
+                <CodeBlock label="Basic Setup">{`<span class="kw">import</span> express <span class="kw">from</span> <span class="str">"express"</span>;
+<span class="kw">import</span> { <span class="fn">toonToJson</span>, <span class="fn">jsonToToon</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
 
 <span class="kw">const</span> app = <span class="fn">express</span>();
 
-<span class="comment">// ← Critical: enables plain text body parsing</span>
+<span class="comment">// ← Required: enables plain text body parsing</span>
 app.<span class="fn">use</span>(express.<span class="fn">text</span>());
 
-app.<span class="fn">listen</span>(<span class="num">3000</span>, () => console.<span class="fn">log</span>(<span class="str">"Server running"</span>));`}</CodeBlock>
-                <InfoCard accent={theme.orange}>
-                  <strong style={{ color: theme.orange }}>⚠️ Required:</strong> Always call{" "}
-                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>app.use(express.text())</code>{" "}
-                  before your routes. toonkit reads from <code style={{ fontFamily: "'Space Mono', monospace" }}>req.body</code>{" "}
-                  which is only populated when Express's text parser is active.
-                </InfoCard>
+app.<span class="fn">listen</span>(<span class="num">3000</span>, () => console.<span class="fn">log</span>(<span class="str">"Running on :3000"</span>));`}</CodeBlock>
               </>
             )}
 
-            {tabBackend === "parse" && (
+            {tabExample === "receive" && (
               <>
-                <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
-                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>reqGetToon(req)</code>{" "}
-                  reads the raw TOON text from{" "}
-                  <code style={{ fontFamily: "'Space Mono', monospace", color: theme.yellow }}>req.body</code>{" "}
-                  and parses it into a plain JavaScript object — ready for use in your route handler.
+                <p style={{ fontSize: 13, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
+                  Parse incoming TOON request bodies with{" "}
+                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>
+                    toonToJson(req.body)
+                  </code>
+                  .
                 </p>
-                <CodeBlock label="reqGetToon — parse incoming TOON">{`app.<span class="fn">post</span>(<span class="str">"/api/employees"</span>, (req, res) => {
-  <span class="comment">// Parse TOON request body into JS object</span>
-  <span class="kw">const</span> data = <span class="fn">reqGetToon</span>(req);
+                <CodeBlock label="Parse TOON Request">{`app.<span class="fn">post</span>(<span class="str">"/api/devices"</span>, (req, res) => {
+  <span class="comment">// Parse TOON body into JS object</span>
+  <span class="kw">const</span> data = <span class="fn">toonToJson</span>(req.body);
 
-  console.<span class="fn">log</span>(data);
-  <span class="comment">// → { employees: [{ id: 1, name: "Riya", ... }] }</span>
+  console.<span class="fn">log</span>(<span class="str">"Received:"</span>, data);
+  <span class="comment">// → { device_id: "DEVICE_PRO_01", battery: 87, ... }</span>
 
-  <span class="comment">// Use data as normal JS object</span>
-  <span class="kw">const</span> { employees } = data;
-  employees.<span class="fn">forEach</span>(emp => console.<span class="fn">log</span>(emp.name));
+  <span class="comment">// Process data as normal JS object</span>
+  <span class="kw">const</span> { device_id, battery } = data;
+
+  res.<span class="fn">json</span>({ <span class="str">success</span>: <span class="kw">true</span>, id: device_id });
 });`}</CodeBlock>
               </>
             )}
 
-            {tabBackend === "respond" && (
+            {tabExample === "send" && (
               <>
-                <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
-                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>resSendToon(res, data)</code>{" "}
-                  serializes your JavaScript object into TOON format and writes it as the HTTP
-                  response with the correct headers automatically.
+                <p style={{ fontSize: 13, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
+                  Respond with TOON-formatted data using{" "}
+                  <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>
+                    jsonToToon(data)
+                  </code>
+                  .
                 </p>
-                <CodeBlock label="resSendToon — respond with TOON">{`app.<span class="fn">get</span>(<span class="str">"/api/dashboard"</span>, (req, res) => {
+                <CodeBlock label="Send TOON Response">{`app.<span class="fn">get</span>(<span class="str">"/api/devices"</span>, (req, res) => {
   <span class="kw">const</span> responseData = {
-    meta: { page: <span class="num">1</span>, limit: <span class="num">10</span>, total: <span class="num">200</span> },
-    employees: [
-      { id: <span class="num">1</span>, name: <span class="str">"Riya"</span>, salary: <span class="num">90000</span> },
-      { id: <span class="num">2</span>, name: <span class="str">"John"</span>, salary: <span class="num">80000</span> }
-    ]
+    device_id: <span class="str">"DEVICE_PRO_01"</span>,
+    battery: <span class="num">87</span>,
+    is_active: <span class="kw">true</span>,
+    location: { <span class="str">lat</span>: <span class="num">12.9716</span>, <span class="str">lng</span>: <span class="num">77.5946</span> }
   };
 
-  <span class="comment">// Serialize + send as TOON in one call</span>
-  <span class="fn">resSendToon</span>(res, responseData);
+  <span class="comment">// Convert to TOON and send as plain text</span>
+  <span class="kw">const</span> toonString = <span class="fn">jsonToToon</span>(responseData);
+  res.<span class="fn">type</span>(<span class="str">"text/plain"</span>).<span class="fn">send</span>(toonString);
 });`}</CodeBlock>
               </>
             )}
 
-            {tabBackend === "full" && (
-              <CodeBlock label="Complete Express Route">{`<span class="kw">const</span> express = <span class="fn">require</span>(<span class="str">"express"</span>);
-<span class="kw">const</span> { <span class="fn">reqGetToon</span>, <span class="fn">resSendToon</span> } = <span class="fn">require</span>(<span class="str">"toonkit"</span>);
+            {tabExample === "full" && (
+              <CodeBlock label="Complete Express Route">{`<span class="kw">import</span> express <span class="kw">from</span> <span class="str">"express"</span>;
+<span class="kw">import</span> { <span class="fn">toonToJson</span>, <span class="fn">jsonToToon</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
 
 <span class="kw">const</span> app = <span class="fn">express</span>();
-app.<span class="fn">use</span>(express.<span class="fn">text</span>());  <span class="comment">// Required middleware</span>
+app.<span class="fn">use</span>(express.<span class="fn">text</span>());  <span class="comment">// Required</span>
+app.<span class="fn">use</span>(express.<span class="fn">json</span>());  <span class="comment">// Optional, for other routes</span>
 
-app.<span class="fn">post</span>(<span class="str">"/api"</span>, (req, res) => {
-  <span class="comment">// 1. Parse TOON from request</span>
-  <span class="kw">const</span> data = <span class="fn">reqGetToon</span>(req);
-  console.<span class="fn">log</span>(<span class="str">"Received:"</span>, data);
+<span class="comment">// POST route — receive TOON</span>
+app.<span class="fn">post</span>(<span class="str">"/api/devices"</span>, (req, res) => {
+  <span class="comment">// 1. Parse TOON request body</span>
+  <span class="kw">const</span> incoming = <span class="fn">toonToJson</span>(req.body);
+  console.<span class="fn">log</span>(<span class="str">"Received:"</span>, incoming);
 
-  <span class="comment">// 2. Process / save to DB / transform...</span>
-  <span class="kw">const</span> result = { ...data, processed: <span class="kw">true</span> };
+  <span class="comment">// 2. Process / validate / save...</span>
+  <span class="kw">const</span> response = { <span class="str">success</span>: <span class="kw">true</span>, <span class="str">device_id</span>: incoming.device_id };
 
-  <span class="comment">// 3. Respond with TOON</span>
-  <span class="fn">resSendToon</span>(res, result);
+  <span class="comment">// 3. Send response as TOON</span>
+  <span class="kw">const</span> toon = <span class="fn">jsonToToon</span>(response);
+  res.<span class="fn">type</span>(<span class="str">"text/plain"</span>).<span class="fn">send</span>(toon);
 });
 
-app.<span class="fn">listen</span>(<span class="num">3000</span>);`}</CodeBlock>
+<span class="comment">// GET route — respond with TOON</span>
+app.<span class="fn">get</span>(<span class="str">"/api/devices/:id"</span>, (req, res) => {
+  <span class="kw">const</span> device = { <span class="str">device_id</span>: <span class="str">"DEVICE_PRO_01"</span>, <span class="str">battery</span>: <span class="num">87</span> };
+  res.<span class="fn">type</span>(<span class="str">"text/plain"</span>).<span class="fn">send</span>(<span class="fn">jsonToToon</span>(device));
+});
+
+app.<span class="fn">listen</span>(<span class="num">3000</span>);</span>`}</CodeBlock>
             )}
+
+            <InfoCard accent={theme.orange}>
+              <strong style={{ color: theme.orange }}>⚠️ Required:</strong> Always call{" "}
+              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>
+                app.use(express.text())
+              </code>{" "}
+              before your routes. Without this,{" "}
+              <code style={{ fontFamily: "'Space Mono', monospace" }}>req.body</code> will be empty.
+            </InfoCard>
           </section>
 
           {/* ── POSTMAN ── */}
@@ -1162,150 +1142,91 @@ app.<span class="fn">listen</span>(<span class="num">3000</span>);`}</CodeBlock>
               id="postman"
               icon="🧪"
               title="Testing with Postman"
-              subtitle="Manually sending TOON requests to your API"
+              subtitle="Manual API testing with TOON payloads"
             />
+
             <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 24, lineHeight: 1.7 }}>
-              Since TOON is plain text, you can easily test your API endpoints using Postman or
-              any HTTP client. Follow these four steps:
+              Since TOON is plain text, testing is straightforward in Postman or any HTTP client.
+              Follow these steps:
             </p>
+
             {[
               {
-                step: "01",
+                num: "1",
                 title: "Set Method",
-                content: (
-                  <span>
-                    Select <strong style={{ color: theme.green }}>POST</strong> as the HTTP method.
-                  </span>
-                ),
+                desc: "Select POST or GET as needed",
               },
               {
-                step: "02",
+                num: "2",
                 title: "Add Header",
-                content: (
-                  <span>
-                    In the <strong>Headers</strong> tab, add:{" "}
-                    <code
-                      style={{
-                        fontFamily: "'Space Mono', monospace",
-                        color: theme.yellow,
-                        fontSize: 12,
-                      }}
-                    >
+                desc: (
+                  <>
+                    <code style={{ color: theme.yellow, fontFamily: "'Space Mono', monospace" }}>
                       Content-Type: text/plain
                     </code>
-                  </span>
+                  </>
                 ),
               },
               {
-                step: "03",
-                title: "Set Body",
-                content: (
-                  <span>
-                    In the <strong>Body</strong> tab, select <strong>raw</strong> and set format to{" "}
-                    <strong>Text</strong>. Then paste your TOON string.
-                  </span>
-                ),
+                num: "3",
+                title: "Raw Body",
+                desc: "In Body tab, select raw → Text. Paste your TOON string.",
               },
               {
-                step: "04",
+                num: "4",
                 title: "Send",
-                content: (
-                  <span>
-                    Hit <strong style={{ color: theme.accent }}>Send</strong>. The server will parse
-                    and respond with TOON.
-                  </span>
-                ),
+                desc: "Hit Send. Response will be TOON text.",
               },
             ].map((item) => (
               <div
-                key={item.step}
+                key={item.num}
                 style={{
                   display: "flex",
-                  gap: 20,
-                  marginBottom: 16,
+                  gap: 16,
+                  marginBottom: 12,
                   background: theme.surface,
                   border: `1px solid ${theme.border}`,
-                  borderRadius: 10,
-                  padding: "16px 20px",
-                  alignItems: "flex-start",
+                  borderRadius: 8,
+                  padding: "14px 16px",
                 }}
               >
                 <span
                   style={{
-                    fontFamily: "'Space Mono', monospace",
-                    fontSize: 22,
-                    fontWeight: 700,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 32,
+                    height: 32,
+                    borderRadius: "50%",
+                    background: theme.accentDim,
                     color: theme.accent,
-                    opacity: 0.4,
-                    minWidth: 40,
-                    lineHeight: 1.3,
+                    fontWeight: 800,
+                    fontSize: 14,
+                    flexShrink: 0,
                   }}
                 >
-                  {item.step}
+                  {item.num}
                 </span>
                 <div>
-                  <div style={{ fontWeight: 700, color: theme.text, marginBottom: 6 }}>{item.title}</div>
-                  <div style={{ fontSize: 13, color: theme.textDim, lineHeight: 1.7 }}>{item.content}</div>
+                  <div style={{ fontWeight: 700, color: theme.text, marginBottom: 4, fontSize: 13 }}>
+                    {item.title}
+                  </div>
+                  <div style={{ fontSize: 12, color: theme.textDim }}>{item.desc}</div>
                 </div>
               </div>
             ))}
-            <CodeBlock label="Postman Body (raw text)">{`<span class="toon-key">employees</span>[<span class="num">2</span>]{<span class="toon-type">id:n,name:s,salary:n</span>}:
-<span class="toon-val">1,Riya,90000</span>
-<span class="toon-val">2,John,80000</span>`}</CodeBlock>
-          </section>
 
-          {/* ── ADVANCED EXAMPLES ── */}
-          <section id="examples" className="section-anim" style={{ marginBottom: 64 }}>
-            <SectionHeader
-              id="examples"
-              icon="📊"
-              title="Advanced Examples"
-              subtitle="Pagination, multi-collection responses, and complex schemas"
-            />
-
-            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16 }}>
-              Pagination Response
+            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16, marginTop: 28 }}>
+              Example TOON Body
             </h3>
-            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
-              A common API pattern is returning paginated data with a <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>meta</code> block
-              alongside the collection. Because <code style={{ fontFamily: "'Space Mono', monospace" }}>meta</code> has no count (no <code style={{ fontFamily: "'Space Mono', monospace" }}>[]</code>),
-              it parses as a plain object.
-            </p>
-            <CodeBlock label="Paginated TOON Response">{`<span class="kw">import</span> { <span class="fn">sendToon</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
+            <CodeBlock label="Postman Body (raw text)">{`<span class="toon-key">device_id</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">s</span>}:
+<span class="toon-val">DEVICE_PRO_01</span>
 
-<span class="fn">sendToon</span>({
-  meta: { page: <span class="num">1</span>, limit: <span class="num">10</span>, total: <span class="num">200</span> },
-  employees: [
-    { id: <span class="num">1</span>, name: <span class="str">"Riya"</span>, salary: <span class="num">90000</span>, active: <span class="kw">true</span>  },
-    { id: <span class="num">2</span>, name: <span class="str">"John"</span>, salary: <span class="num">80000</span>, active: <span class="kw">false</span> },
-    <span class="comment">// ... up to limit rows</span>
-  ]
-});`}</CodeBlock>
+<span class="toon-key">battery</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">n</span>}:
+<span class="toon-val">87</span>
 
-            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16, marginTop: 32 }}>
-              Multiple Collections
-            </h3>
-            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
-              One of TOON's strengths is encoding multiple collections in a single response.
-              This is useful for dashboard endpoints that return users, products, and orders together.
-            </p>
-            <CodeBlock label="Multi-collection Response">{`<span class="fn">sendToon</span>({
-  users: [
-    { id: <span class="num">1</span>, name: <span class="str">"Alice"</span>, role: <span class="str">"admin"</span> },
-    { id: <span class="num">2</span>, name: <span class="str">"Bob"</span>,   role: <span class="str">"user"</span>  }
-  ],
-  products: [
-    { sku: <span class="str">"A1"</span>, title: <span class="str">"Keyboard"</span>, price: <span class="num">79.99</span> },
-    { sku: <span class="str">"B2"</span>, title: <span class="str">"Mouse"</span>,    price: <span class="num">39.99</span> }
-  ],
-  orders: [
-    { id: <span class="num">101</span>, userId: <span class="num">1</span>, total: <span class="num">119.98</span>, fulfilled: <span class="kw">true</span> }
-  ]
-});`}</CodeBlock>
-            <InfoCard accent={theme.green}>
-              Instead of three separate API calls, return all three collections in one TOON
-              response — keeping bandwidth low and round-trips minimal.
-            </InfoCard>
+<span class="toon-key">is_active</span>[<span class="num">1</span>]{<span class="num">0</span>:<span class="toon-type">b</span>}:
+<span class="toon-val">true</span>`}</CodeBlock>
           </section>
 
           {/* ── PERFORMANCE ── */}
@@ -1313,115 +1234,89 @@ app.<span class="fn">listen</span>(<span class="num">3000</span>);`}</CodeBlock>
             <SectionHeader
               id="performance"
               icon="⚡"
-              title="Performance Advantage"
-              subtitle="Why TOON is faster and lighter than JSON"
+              title="Performance & Size"
+              subtitle="Why TOON is more efficient than JSON"
             />
-            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 24, lineHeight: 1.7 }}>
-              JSON repeats every key name for every row. In a dataset with 100 employees, the field
-              names <code style={{ color: theme.yellow, fontFamily: "'Space Mono', monospace" }}>id</code>,{" "}
-              <code style={{ color: theme.yellow, fontFamily: "'Space Mono', monospace" }}>name</code>,{" "}
-              <code style={{ color: theme.yellow, fontFamily: "'Space Mono', monospace" }}>salary</code>,{" "}
-              <code style={{ color: theme.yellow, fontFamily: "'Space Mono', monospace" }}>active</code>{" "}
-              each appear 100 times. TOON declares them once in the schema header.
+
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 20, lineHeight: 1.7 }}>
+              JSON repeats every key name in every object. TOON declares the schema once,
+              then uses compact row values. For tabular data with many rows, this saves
+              significant bytes and parsing time.
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 28 }}>
+
+            <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16 }}>
+              Size Comparison
+            </h3>
+            <CodeBlock label="Same Data — JSON vs TOON">{`<span class="comment">// JSON: ~145 bytes</span>
+{"devices":[{"device_id":"DEVICE_PRO_01","battery":87,"is_active":true},{"device_id":"DEVICE_PRO_02","battery":92,"is_active":false}]}
+
+<span class="comment">// TOON: ~90 bytes (38% reduction)</span>
+<span class="toon-key">devices</span>[<span class="num">2</span>]{<span class="toon-type">device_id:s,battery:n,is_active:b</span>}:
+<span class="toon-val">DEVICE_PRO_01,87,true</span>
+<span class="toon-val">DEVICE_PRO_02,92,false</span>`}</CodeBlock>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 20,
+                marginTop: 24,
+              }}
+            >
               <div
                 style={{
                   background: theme.surface,
                   border: `1px solid ${theme.border}`,
                   borderRadius: 10,
-                  padding: 24,
+                  padding: 20,
                   textAlign: "center",
                 }}
               >
-                <div style={{ fontSize: 36, fontWeight: 800, color: theme.orange, fontFamily: "'Space Mono', monospace", marginBottom: 8 }}>
+                <div style={{ fontSize: 28, fontWeight: 800, color: theme.orange, marginBottom: 8 }}>
                   JSON
                 </div>
-                <div style={{ fontSize: 13, color: theme.textDim, lineHeight: 1.7 }}>
-                  Keys repeated per row<br />
-                  Nested braces & quotes<br />
-                  Heavier for tabular data<br />
-                  No inline type schema
-                </div>
+                <ul
+                  style={{
+                    fontSize: 12,
+                    color: theme.textDim,
+                    lineHeight: 1.8,
+                    textAlign: "left",
+                    listStyle: "none",
+                  }}
+                >
+                  <li>❌ Keys repeated per row</li>
+                  <li>❌ Nested braces & quotes</li>
+                  <li>❌ Heavier for tables</li>
+                  <li>❌ More to parse</li>
+                </ul>
               </div>
               <div
                 style={{
-                  background: `${theme.accentDim}`,
+                  background: theme.accentDim,
                   border: `1px solid ${theme.accent}44`,
                   borderRadius: 10,
-                  padding: 24,
+                  padding: 20,
                   textAlign: "center",
                 }}
               >
-                <div style={{ fontSize: 36, fontWeight: 800, color: theme.accent, fontFamily: "'Space Mono', monospace", marginBottom: 8 }}>
+                <div style={{ fontSize: 28, fontWeight: 800, color: theme.accent, marginBottom: 8 }}>
                   TOON
                 </div>
-                <div style={{ fontSize: 13, color: theme.textDim, lineHeight: 1.7 }}>
-                  Keys declared once in header<br />
-                  Clean CSV-style rows<br />
-                  Smaller payload size<br />
-                  Types baked in
-                </div>
-              </div>
-            </div>
-            <CodeBlock label="Same data — JSON vs TOON">{`<span class="comment">// JSON: ~120 bytes for 2 rows</span>
-{"employees":[{"id":1,"name":"Riya","salary":90000,"active":true},{"id":2,"name":"John","salary":80000,"active":false}]}
-
-<span class="comment">// TOON: ~70 bytes for 2 rows</span>
-<span class="toon-key">employees</span>[<span class="num">2</span>]{<span class="toon-type">id:n,name:s,salary:n,active:b</span>}:
-<span class="toon-val">1,Riya,90000,true</span>
-<span class="toon-val">2,John,80000,false</span>`}</CodeBlock>
-          </section>
-
-          {/* ── USE CASES ── */}
-          <section id="usecases" className="section-anim" style={{ marginBottom: 64 }}>
-            <SectionHeader
-              id="usecases"
-              icon="🎯"
-              title="When to Use toonkit"
-              subtitle="Ideal scenarios and environments for TOON"
-            />
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 14,
-              }}
-            >
-              {[
-                { icon: "🔌", label: "REST APIs", desc: "Multi-resource responses with pagination. Replace JSON where payload size matters." },
-                { icon: "🤖", label: "Bots & Automation", desc: "Structured, typed messages that are easy to produce and parse programmatically." },
-                { icon: "📡", label: "Low-bandwidth Systems", desc: "IoT, mobile, and embedded environments where every byte counts." },
-                { icon: "🧩", label: "Chrome Extensions", desc: "Compact storage and messaging between content scripts and background workers." },
-                { icon: "⚙️", label: "Microservices", desc: "Efficient inter-service communication with typed, lightweight payloads." },
-                { icon: "📋", label: "Admin Tools", desc: "Dashboard APIs returning multiple collections — users, stats, logs — in one call." },
-                { icon: "🔁", label: "Data Pipelines", desc: "Pass structured data between pipeline stages with built-in type enforcement." },
-                { icon: "🛠", label: "Developer Tooling", desc: "Config files and CLI tool outputs that remain human-readable and type-safe." },
-              ].map((item) => (
-                <div
-                  key={item.label}
+                <ul
                   style={{
-                    background: theme.surface,
-                    border: `1px solid ${theme.border}`,
-                    borderRadius: 10,
-                    padding: "16px 18px",
-                    display: "flex",
-                    gap: 14,
-                    alignItems: "flex-start",
-                    transition: "border-color 0.15s",
+                    fontSize: 12,
+                    color: theme.textDim,
+                    lineHeight: 1.8,
+                    textAlign: "left",
+                    listStyle: "none",
                   }}
-                  onMouseEnter={(e: MouseEvent<HTMLDivElement>) => ((e.currentTarget as HTMLDivElement).style.borderColor = theme.accent + "55")}
-                  onMouseLeave={(e: MouseEvent<HTMLDivElement>) => ((e.currentTarget as HTMLDivElement).style.borderColor = theme.border)}
                 >
-                  <span style={{ fontSize: 22 }}>{item.icon}</span>
-                  <div>
-                    <div style={{ fontWeight: 700, fontSize: 14, color: theme.text, marginBottom: 4 }}>
-                      {item.label}
-                    </div>
-                    <div style={{ fontSize: 12, color: theme.textMuted, lineHeight: 1.6 }}>{item.desc}</div>
-                  </div>
-                </div>
-              ))}
+                  <li>✅ Keys declared once</li>
+                  <li>✅ CSV-style rows</li>
+                  <li>✅ Compact payloads</li>
+                  <li>✅ Faster to parse</li>
+                </ul>
+              </div>
             </div>
 
             {/* Footer */}
@@ -1432,22 +1327,16 @@ app.<span class="fn">listen</span>(<span class="num">3000</span>);`}</CodeBlock>
                 background: theme.surface,
                 border: `1px solid ${theme.border}`,
                 borderRadius: 14,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexWrap: "wrap",
-                gap: 20,
               }}
             >
-              <div>
-                <div style={{ fontWeight: 800, fontSize: 18, color: theme.text, marginBottom: 4 }}>
-                  Built by Manoj Gowda
-                </div>
-                <div style={{ fontSize: 13, color: theme.textMuted }}>
-                  toonkit is MIT licensed and open to contributions.
-                </div>
+              <div style={{ fontWeight: 800, fontSize: 16, color: theme.text, marginBottom: 8 }}>
+                Ready to use toonkit?
               </div>
-              <div style={{ display: "flex", gap: 12 }}>
+              <p style={{ fontSize: 13, color: theme.textDim, marginBottom: 20, lineHeight: 1.6 }}>
+                Install from npm, import the functions, and start converting between JSON and TOON.
+                Perfect for REST APIs, bots, IoT devices, and any system where payload size matters.
+              </p>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 <a
                   href="https://github.com/ManojGowda89/toonkit"
                   target="_blank"
@@ -1459,16 +1348,15 @@ app.<span class="fn">listen</span>(<span class="num">3000</span>);`}</CodeBlock>
                     border: `1px solid ${theme.accent}55`,
                     color: theme.accent,
                     textDecoration: "none",
-                    fontSize: 13,
+                    fontSize: 12,
                     fontWeight: 700,
                     fontFamily: "'Space Mono', monospace",
-                    transition: "all 0.15s",
                   }}
                 >
                   ⭐ GitHub
                 </a>
                 <a
-                  href="https://toonkit.manojgowda.in"
+                  href="https://www.npmjs.com/package/toonkit"
                   target="_blank"
                   rel="noreferrer"
                   style={{
@@ -1478,12 +1366,12 @@ app.<span class="fn">listen</span>(<span class="num">3000</span>);`}</CodeBlock>
                     border: `1px solid ${theme.purple}44`,
                     color: theme.purple,
                     textDecoration: "none",
-                    fontSize: 13,
+                    fontSize: 12,
                     fontWeight: 700,
                     fontFamily: "'Space Mono', monospace",
                   }}
                 >
-                  ↗ Docs
+                  📦 NPM
                 </a>
               </div>
             </div>

@@ -1,24 +1,30 @@
-import { receiveToon } from "toonkit";
+import { toonToJson } from "toonkit";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const text = await req.text();
+    const toonData = await req.text();
 
-    if (!text || !text.trim()) {
+    if (!toonData || !toonData.trim()) {
       return Response.json(
         { error: "Empty TOON payload" },
         { status: 400 }
       );
     }
 
-    const data = receiveToon(text);
+    console.log("RAW TOON:\n", toonData);
 
-    return Response.json(data);
-  } catch (err: any) {
+    const json = toonToJson(toonData);
+
+    console.log("PARSED JSON:\n", { device_id: json?.device_id });
+
+    return Response.json(json, { status: 200 });
+  } catch (err) {
+    console.error(err);
+
     return Response.json(
-      { error: err.message || "TOON parse failed" },
-      { status: 400 }
+      { error: "TOON Parsing failed" },
+      { status: 500 }
     );
   }
 }
