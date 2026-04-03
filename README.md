@@ -1,51 +1,47 @@
-
----
-
 # 📦 toonkit
 
 ![npm](https://img.shields.io/npm/v/toonkit)
 ![downloads](https://img.shields.io/npm/dw/toonkit)
 ![license](https://img.shields.io/npm/l/toonkit)
 
-**Typed Object Oriented Notation (TOON) parser & serializer**
+**Typed Object Oriented Notation (TOON) parser & serializer**  
 for frontend and backend JavaScript applications.
 
 🚀 Lightweight • Type-safe • Human-readable • API-friendly
 
-🌐 Docs: **[https://toonkit.manojgowda.in](https://toonkit.manojgowda.in)**
-💻 Npm: **[https://www.npmjs.com/package/toonkit](https://www.npmjs.com/package/toonkit)**
+- 🌐 Docs: https://toonkit.manojgowda.in  
+- 💻 Npm: https://www.npmjs.com/package/toonkit  
+- 💻 GitHub: https://github.com/ManojGowda89/toonkit  
 
 ---
 
 ## ✨ Why toonkit?
 
-JSON is powerful but verbose.
+JSON is powerful but often verbose. **TOON** is designed to be compact, human-readable, and API-friendly.
 
-**TOON** provides:
-
-✅ smaller payloads
-✅ human-readable format
-✅ schema with types
-✅ multi-resource support
-✅ frontend ⇄ backend symmetry
-✅ perfect for APIs, bots & automation
+✅ Smaller payloads  
+✅ Human-readable format  
+✅ Schema with types  
+✅ Multi-resource support  
+✅ Frontend ⇄ backend symmetry  
+✅ Great for APIs, bots & automation  
 
 ---
 
-# 🧠 What is TOON?
+## 🧠 What is TOON?
 
-TOON = **Typed Object Oriented Notation**
+**TOON = Typed Object Oriented Notation**
 
 It combines:
 
-✔ schema
-✔ data
-✔ types
-✔ compact structure
+- ✔ schema
+- ✔ data
+- ✔ types
+- ✔ compact structure
 
 ---
 
-# 🧾 Example TOON
+## 🧾 Example TOON
 
 ```text
 meta{page:n,limit:n,total:n}:
@@ -59,9 +55,7 @@ departments[1]{id:s,title:s}:
 10,Engineering
 ```
 
----
-
-# 🔄 Parsed JSON Output
+### 🔄 Parsed JSON Output
 
 ```js
 {
@@ -81,29 +75,30 @@ departments[1]{id:s,title:s}:
 
 ---
 
-# 🧬 Supported Data Types
+## 🧬 Supported Data Types
 
 | Code | Type        | Example |
 | ---- | ----------- | ------- |
-| n    | number      | 25      |
-| s    | string      | Manoj   |
-| b    | boolean     | true    |
-| nl   | null        | null    |
-| j    | JSON object | {"a":1} |
-| a    | array       | [1,2,3] |
+| `s`  | string      | `Manoj` |
+| `n`  | number      | `25` |
+| `b`  | boolean     | `true` |
+| `nl` | null        | `null` |
+| `j`  | JSON object | `{"a":1}` |
+| `a`  | array       | `[1,2,3]` |
+| `td` | text/date (raw) | `03042026120000` |
 
----
+> Note: `td` is currently treated as **raw text** in the parser (no automatic Date conversion).
 
-## Example With All Types
+### Example with all supported types
 
 ```text
-sample{age:n,name:s,active:b,data:j,tags:a,value:nl}:
-25,Manoj,true,{"x":1},["a","b"],null
+sample{age:n,name:s,active:b,data:j,tags:a,value:nl,created:td}:
+25,Manoj,true,{"x":1},["a","b"],null,03042026120000
 ```
 
 ---
 
-# 📥 Installation
+## 📥 Installation
 
 ```bash
 npm install toonkit
@@ -111,25 +106,25 @@ npm install toonkit
 
 ---
 
-# 🧩 Importing toonkit
+## 🧩 Importing toonkit
 
 ### CommonJS
 
 ```js
-const { sendToon, receiveToon, reqGetToon, resSendToon } = require("toonkit");
+const { sendToon, receiveToon, reqGetToon, resSendToon, toonToJson, jsonToToon } = require("toonkit");
 ```
 
 ### ES Modules
 
 ```js
-import { sendToon, receiveToon, reqGetToon, resSendToon } from "toonkit";
+import { sendToon, receiveToon, reqGetToon, resSendToon, toonToJson, jsonToToon } from "toonkit";
 ```
 
 ---
 
-# 🌐 Frontend Usage
+## 🌐 Frontend Usage
 
-## ✅ Convert JSON → TOON
+### ✅ Convert JSON → TOON
 
 ```js
 import { sendToon } from "toonkit";
@@ -142,9 +137,7 @@ const payload = sendToon({
 });
 ```
 
----
-
-## ✅ Send to API
+### ✅ Send TOON to API
 
 ```js
 await fetch("/api", {
@@ -154,9 +147,7 @@ await fetch("/api", {
 });
 ```
 
----
-
-## ✅ Convert TOON → JSON
+### ✅ Convert TOON → JSON
 
 ```js
 import { receiveToon } from "toonkit";
@@ -167,85 +158,155 @@ const data = receiveToon(text);
 
 ---
 
-# 🖥 Backend Usage (Express)
+## 🖥 Backend Usage (Express)
 
-### Setup
+### ✅ Setup
 
 ```js
 const express = require("express");
 const { reqGetToon, resSendToon } = require("toonkit");
 
 const app = express();
-app.use(express.text());
+app.use(express.text()); // required to read TOON as plain text
 ```
 
----
-
-### Parse & Respond
+### ✅ Parse & Respond
 
 ```js
 app.post("/api", (req, res) => {
-
   const data = reqGetToon(req);
-
   console.log(data);
-
   resSendToon(res, data);
 });
 ```
 
 ---
 
-# 🧪 Using toonkit in Postman
+## 🧪 Using toonkit in Postman
 
 ### Step 1: Method
-
-POST
+`POST`
 
 ### Step 2: Headers
-
 ```
 Content-Type: text/plain
 ```
 
 ### Step 3: Body → raw → Text
-
 ```text
 employees[2]{id:n,name:s,salary:n}:
 1,Riya,90000
 2,John,80000
 ```
 
-### Step 4: Send
+### Step 4: Send ✅
 
 ---
 
-# 📊 Pagination Example
+## ✅ Full Real Example (All Types)
 
-```js
-sendToon({
-  meta: { page: 1, limit: 10, total: 200 },
-  employees: [...]
-});
+### JSON Input
+
+```json
+{
+  "device_id": "DEVICE_PRO_01",
+  "userId": "USER_ABC123",
+  "battery": 87,
+  "temperature": 36.7,
+  "is_active": true,
+  "is_charging": false,
+  "last_error": null,
+  "location": {
+    "lat": 12.9716,
+    "lng": 77.5946,
+    "altitude": 920.5
+  },
+  "heart_rate_history": [72, 75, 78, 80, 76],
+  "activity_log": [
+    { "type": "walk", "steps": 1200, "calories": 50 },
+    { "type": "run", "steps": 3000, "calories": 180 }
+  ],
+  "tags": ["iot", "health", "tracker"],
+  "config": {
+    "mode": "tracking",
+    "alerts": {
+      "heart": true,
+      "fall": false
+    }
+  },
+  "nested_array_test": [
+    [1, 2, 3],
+    [4, 5, [6, 7]]
+  ],
+  "created_at": "03042026120000"
+}
+```
+
+### TOON Output
+
+```text
+device_id[1]{0:s}:
+DEVICE_PRO_01
+
+userId[1]{0:s}:
+USER_ABC123
+
+battery[1]{0:n}:
+87
+
+temperature[1]{0:n}:
+36.7
+
+is_active[1]{0:b}:
+true
+
+is_charging[1]{0:b}:
+false
+
+last_error[1]{0:nl}:
+null
+
+location[1]{0:j}:
+{
+  "lat": 12.9716,
+  "lng": 77.5946,
+  "altitude": 920.5
+}
+
+heart_rate_history[1]{0:a}:
+[72, 75, 78, 80, 76]
+
+activity_log[1]{0:a}:
+[
+  { "type": "walk", "steps": 1200, "calories": 50 },
+  { "type": "run", "steps": 3000, "calories": 180 }
+]
+
+tags[1]{0:a}:
+["iot", "health", "tracker"]
+
+config[1]{0:j}:
+{
+  "mode": "tracking",
+  "alerts": {
+    "heart": true,
+    "fall": false
+  }
+}
+
+nested_array_test[1]{0:a}:
+[
+  [1, 2, 3],
+  [4, 5, [6, 7]]
+]
+
+created_at[1]{0:td}:
+03042026120000
 ```
 
 ---
 
-# 📦 Multiple Collections Support
-
-```js
-sendToon({
-  users: [...],
-  products: [...],
-  orders: [...]
-});
-```
-
-Perfect for single API responses.
-
----
-
-# ⚠️ Important Notes
+## ⚠️ Important Notes
 
 ✔ Enable Express text parser:
 
@@ -253,94 +314,107 @@ Perfect for single API responses.
 app.use(express.text());
 ```
 
-✔ Use correct header:
+✔ Use correct header when sending TOON:
 
 ```
 Content-Type: text/plain
 ```
 
-✔ Schema must match values.
+✔ For `a` and `j`, the TOON values must be **valid JSON** (because parsing uses `JSON.parse`).
 
 ---
 
-# ⚡ Performance Advantage
+## ⚡ Performance Advantage
 
 Compared to JSON:
 
-✔ smaller payload
-✔ faster parsing
-✔ human readable
-✔ API efficient
+✔ smaller payload  
+✔ faster parsing  
+✔ human readable  
+✔ API efficient  
 
 ---
 
-# 🧠 When to Use toonkit
+## 🧠 When to Use toonkit
 
-✅ APIs returning multiple resources
-✅ bots & automation
-✅ low bandwidth systems
-✅ Chrome extensions
-✅ microservices
-✅ admin tools
-✅ data pipelines
-
----
-
-# 👨‍💻 Developer
-
-**Manoj Gowda**
-🌐 [https://manojgowda.in](https://manojgowda.in)
+✅ APIs returning multiple resources  
+✅ bots & automation  
+✅ low bandwidth systems  
+✅ Chrome extensions  
+✅ microservices  
+✅ admin tools  
+✅ data pipelines  
 
 ---
 
-# 💬 Developer Note
+## 🤝 Contributing
 
-Curious to explore new ideas and build tools that make development easier.
-
-**toonkit** is created to:
-
-✔ save time for developers
-✔ simplify data exchange
-✔ provide a single function flow for JavaScript lovers
-✔ encourage contributions & innovation
+Contributions are welcome!  
+Open PRs or share ideas to improve toonkit.
 
 ---
 
-# 🤝 Contributing
+## 👨‍💻 Developer
 
-Contributions are welcome!
-
-If you want to improve toonkit, open a PR or share ideas.
-
-Let’s make data exchange simpler together 🚀
+**Manoj Gowda**  
+🌐 https://manojgowda.in
 
 ---
 
-# 📚 Documentation
-
-Full documentation available at:
-
-👉 [https://toonkit.manojgowda.in](https://toonkit.manojgowda.in)
-
----
-
-# 💻 Source Code
-
-GitHub Repository:
-
-👉 [https://github.com/ManojGowda89/toonkit](https://github.com/ManojGowda89/toonkit)
-
----
-
-# 📄 License
+## 📄 License
 
 MIT
 
 ---
 
-# ⭐ If you like toonkit
+## ✅ Example Express Server (TOON ⇄ JSON)
 
-Give it a star ⭐ and share with developers!
+```js
+import express from "express";
+import { toonToJson, jsonToToon } from "toonkit";
 
----
+const app = express();
 
+// Middleware
+app.use(express.text());   // for TOON
+app.use(express.json());   // for JSON
+
+// TOON → JSON
+app.post("/toon", (req, res) => {
+  try {
+    const toonData = req.body;
+    console.log("RAW TOON:\n", toonData);
+
+    const json = toonToJson(toonData);
+
+    console.log("PARSED JSON:\n", { device_id: json.device_id });
+
+    res.json(json);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "TOON Parsing failed" });
+  }
+});
+
+// JSON → TOON
+app.post("/json", (req, res) => {
+  try {
+    const obj = req.body;
+
+    console.log("PARSED JSON:\n", obj);
+
+    const toon = jsonToToon(obj);
+
+    console.log("FORMATTED TOON:\n", toon);
+
+    res.type("text/plain").send(toon);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "JSON Conversion failed" });
+  }
+});
+
+app.listen(3000, () => {
+  console.log("🚀 Server running on http://localhost:3000");
+});
+```
