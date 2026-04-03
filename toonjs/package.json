@@ -2,11 +2,9 @@
   "name": "toonkit",
   "version": "2.0.0",
   "description": "Typed Object Oriented Notation (TOON) parser and serializer. Convert TOON ↔ JSON with full type support, nested structures, and high-performance parsing for APIs, IoT, and real-time systems.",
-
   "main": "./dist/cjs/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-
   "exports": {
     ".": {
       "require": "./dist/cjs/index.js",
@@ -15,19 +13,16 @@
       "default": "./dist/cjs/index.js"
     }
   },
-
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
-
   "scripts": {
     "build": "tsc && tsc -p tsconfig.cjs.json",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build"
   },
-
   "keywords": [
     "toon",
     "toonkit",
@@ -57,32 +52,27 @@
     "real-time",
     "fast-serialization"
   ],
-
   "author": "Manoj Gowda B R",
   "homepage": "https://toonkit.manojgowda.in",
-
   "repository": {
     "type": "git",
     "url": "https://github.com/ManojGowda89/toonkit.git"
   },
-
   "bugs": {
     "url": "https://github.com/ManojGowda89/toonkit/issues"
   },
-
   "funding": {
     "type": "github",
     "url": "https://github.com/sponsors/ManojGowda89"
   },
-
   "license": "MIT",
   "sideEffects": false,
-
   "engines": {
     "node": ">=14"
   },
-
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "csstype": "^3.2.3",
+    "typescript": "^5.0.0",
+    "undici-types": "^8.0.0"
   }
 }

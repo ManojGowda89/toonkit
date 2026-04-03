@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "CommonJS",
+    "moduleResolution": "node",   // ✅ override for CJS
     "outDir": "./dist/cjs"
   }
 }
