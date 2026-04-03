@@ -1,27 +1,32 @@
 {
   "name": "toonkit",
-  "version": "1.0.6",
-  "description": "Typed Object Oriented Notation (TOON) parser and serializer for frontend and backend JavaScript applications. Lightweight, type-safe, schema-based alternative to JSON for APIs, microservices, and automation.",
+  "version": "2.0.0",
+  "description": "Typed Object Oriented Notation (TOON) parser and serializer. Convert TOON ↔ JSON with full type support, nested structures, and high-performance parsing for APIs, IoT, and real-time systems.",
 
-  "main": "./index.cjs",
-  "module": "./index.mjs",
-  "types": "./index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
 
   "exports": {
     ".": {
-      "require": "./index.cjs",
-      "import": "./index.mjs",
-      "default": "./index.cjs"
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/cjs/index.js"
     }
   },
 
   "files": [
-    "index.cjs",
-    "index.mjs",
-    "index.d.ts",
+    "dist",
     "README.md",
     "LICENSE"
   ],
+
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.cjs.json",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
 
   "keywords": [
     "toon",
@@ -47,7 +52,9 @@
     "nodejs",
     "nextjs",
     "react",
-    "compression",
+    "iot",
+    "mqtt",
+    "real-time",
     "fast-serialization"
   ],
 
@@ -73,5 +80,9 @@
 
   "engines": {
     "node": ">=14"
+  },
+
+  "devDependencies": {
+    "typescript": "^5.0.0"
   }
 }
