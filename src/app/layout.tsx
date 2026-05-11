@@ -42,6 +42,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta
+          name="google-site-verification"
+          content="EUYBWEqpv0cLfawOccM6itH9lGC4nYmBsiuiHn69pTU"
+        />
         <link rel="canonical" href="https://toonkit.js.org" />
         <link rel="icon" type="image/jpeg" href="/logo.jpg" />
         <link rel="apple-touch-icon" href="/logo.jpg" />
