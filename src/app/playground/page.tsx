@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { jsonToToon, toonToJson } from "toonkit";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type InputMode = "json" | "toon" | "unknown";
@@ -546,27 +547,52 @@ export default function Playground() {
       let outputText = "";
 
       if (detectedType === "json") {
-        // JSON → TOON via /api/toon/send
-        const res = await fetch("/api/toon/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: input,
-        });
-        if (!res.ok) throw new Error(await res.text());
-        outputText = await res.text();
-      } else {
-        // TOON → JSON via /api/toon/receive
-        const res = await fetch("/api/toon/receive", {
-          method: "POST",
-          headers: { "Content-Type": "text/plain" },
-          body: input,
-        });
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error ?? "Parse failed");
+        // Try server API first (works on Vercel/dev). If it fails (e.g. GitHub Pages), fallback to in-browser conversion.
+        try {
+          const res = await fetch("/api/toon/send", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: input,
+          });
+          if (res.ok) {
+            outputText = await res.text();
+          } else {
+            // server returned error; fallthrough to local conversion
+            throw new Error(await res.text());
+          }
+        } catch (e) {
+          // Fallback: convert in-browser using the `toonkit` package
+          try {
+            const obj = JSON.parse(input);
+            outputText = jsonToToon(obj);
+          } catch (err) {
+            throw new Error("Local JSON→TOON conversion failed: " + (err instanceof Error ? err.message : String(err)));
+          }
         }
-        const json = await res.json();
-        outputText = JSON.stringify(json, null, 2);
+      } else {
+        // TOON → JSON: try server API first
+        try {
+          const res = await fetch("/api/toon/receive", {
+            method: "POST",
+            headers: { "Content-Type": "text/plain" },
+            body: input,
+          });
+          if (res.ok) {
+            const json = await res.json();
+            outputText = JSON.stringify(json, null, 2);
+          } else {
+            const err = await res.json().catch(() => ({ error: "Parse failed" }));
+            throw new Error(err.error ?? "Parse failed");
+          }
+        } catch (e) {
+          // Fallback: parse in-browser using `toonkit`
+          try {
+            const json = toonToJson(input);
+            outputText = JSON.stringify(json, null, 2);
+          } catch (err) {
+            throw new Error("Local TOON→JSON conversion failed: " + (err instanceof Error ? err.message : String(err)));
+          }
+        }
       }
 
       const durationMs = Math.round(performance.now() - t0);
