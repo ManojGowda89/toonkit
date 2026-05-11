@@ -11,9 +11,14 @@ This package provides **two main functions**:
 - `toonToJson(toon: string)` → converts **TOON text** into **JSON**
 - `jsonToToon(obj: any)` → converts **JSON** into **TOON text**
 
-Docs: https://toonkit.manojgowda.in  
-NPM: https://www.npmjs.com/package/toonkit  
-GitHub: https://github.com/ManojGowda89/toonkit
+**Official Domains:**
+- 🌐 Primary: https://toonkit.js.org  
+- 🌐 Secondary: https://toonkit.manojgowda.in  
+
+**Links:**
+- 📚 Docs: https://toonkit.js.org  
+- 📦 NPM: https://www.npmjs.com/package/toonkit  
+- 🐙 GitHub: https://github.com/ManojGowda89/toonkit
 
 ---
 

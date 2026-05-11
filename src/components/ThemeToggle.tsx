@@ -3,7 +3,7 @@
 import { IconButton } from "@mui/material";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useContext } from "react";
-import { ColorModeContext } from "@/app/layout";
+import { ColorModeContext } from "@/app/Providers";
 
 export default function ThemeToggle() {
   const { toggleColorMode } = useContext(ColorModeContext);
