@@ -11,6 +11,10 @@ export const metadata: Metadata = {
 
   alternates: {
     canonical: "https://toonkit.js.org",
+    urls: {
+      "en-US": "https://toonkit.js.org",
+      "en": "https://toonkit.manojgowda.in",
+    },
   },
 
   openGraph: {

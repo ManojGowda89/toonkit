@@ -7,6 +7,9 @@ export default function robots() {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://toonkit.js.org/sitemap.xml",
+    sitemaps: [
+      "https://toonkit.js.org/sitemap.xml",
+      "https://toonkit.manojgowda.in/sitemap.xml",
+    ],
   };
 }
