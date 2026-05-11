@@ -1,5 +1,6 @@
 "use client";
 
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { useMemo, useState, createContext } from "react";
 import { getTheme } from "@/theme/theme";
@@ -24,12 +25,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Navbar />
-        {children}
-        <Footer />
-      </ThemeProvider>
+      <AppRouterCacheProvider options={{ key: "mui" }}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Navbar />
+          {children}
+          <Footer />
+        </ThemeProvider>
+      </AppRouterCacheProvider>
     </ColorModeContext.Provider>
   );
 }

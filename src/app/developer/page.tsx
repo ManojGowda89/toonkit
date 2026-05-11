@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { Container, Typography, Link } from "@mui/material";
+
+export const metadata: Metadata = {
+  title: "Developer - Toonkit",
+  description: "Manoj Gowda - Creator of Toonkit. Explore projects, contributions, and tools built for developers.",
+};
 
 export default function Page() {
   return (

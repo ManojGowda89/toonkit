@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Examples - Toonkit",
+  description: "Toonkit examples and workflows - Real-world use cases, integrations, and best practices for implementing TOON format.",
+};
+
 const ExamplesPage = () => {
   return (
     <div style={{ padding: "32px 16px", maxWidth: 960, margin: "0 auto" }}>

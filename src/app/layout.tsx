@@ -11,10 +11,6 @@ export const metadata: Metadata = {
 
   alternates: {
     canonical: "https://toonkit.js.org",
-    urls: {
-      "en-US": "https://toonkit.js.org",
-      "en": "https://toonkit.manojgowda.in",
-    },
   },
 
   openGraph: {
@@ -38,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Toonkit",
     description: "Compact typed alternative to JSON for JavaScript applications.",
-    image: "https://toonkit.js.org/logo.jpg",
+    images: ["https://toonkit.js.org/logo.jpg"],
   },
 };
 
