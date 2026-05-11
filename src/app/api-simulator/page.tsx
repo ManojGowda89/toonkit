@@ -442,7 +442,43 @@ export default function ToonkitPlayground() {
 
         /* Two columns */
         .playground-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-        @media(max-width:900px){.playground-cols{grid-template-columns:1fr;}}
+        @media(max-width:900px){
+          .pg-header{padding:14px 16px;flex-wrap:wrap;gap:10px;}
+          .pg-logo{width:100%;justify-content:center;}
+          .pg-links{width:100%;justify-content:center;flex-wrap:wrap;gap:12px;}
+          .pg-main{padding:24px 16px;}
+          .playground-cols{grid-template-columns:1fr;}
+          .col-action{flex-direction:column;align-items:flex-start;}
+          .toggle-bar{width:100%;}
+          .toggle-btn{flex:1;min-width:0;}
+          .flow-step{padding:14px 0;}
+          .flow-step:not(:last-child)::after{left:16px;}
+        }
+
+        @media(max-width:640px){
+          .section-title{font-size:20px;}
+          .section-sub{font-size:12px;}
+          .pg-main{padding:20px 12px;}
+          .col-header{padding:12px 14px;flex-wrap:wrap;gap:8px;}
+          .col-label{padding:10px 14px 0 14px;}
+          .col-textarea{min-height:160px;padding:12px 14px;font-size:11px;}
+          .col-action{padding:12px 14px;gap:10px;}
+          .pill{font-size:10px;padding:4px 10px;}
+          .btn-run{width:100%;justify-content:center;}
+          .bench-section{padding:20px 16px;}
+          .bench-grid{grid-template-columns:1fr;}
+          .bar-row{align-items:flex-start;}
+          .bar-label{min-width:42px;}
+          .bar-track{height:22px;}
+          .toggle-bar{flex-direction:column;width:100%;}
+          .toggle-btn:first-child,.toggle-btn:last-child{border-radius:6px;}
+          .toggle-btn{width:100%;}
+          .flow-card{padding:18px 16px;}
+          .flow-step{gap:12px;}
+          .flow-title{font-size:13px;}
+          .flow-desc{font-size:11px;}
+          .type-table th,.type-table td{padding:7px 10px;font-size:11px;}
+        }
 
         .col-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
         .col-card.json-col{border-top:3px solid var(--orange);}

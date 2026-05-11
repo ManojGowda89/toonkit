@@ -143,6 +143,209 @@ const globalStyles = `
     border-color: ${theme.accent}55;
   }
 
+  .docs-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .docs-tab-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .docs-prop-table {
+    overflow-x: auto;
+  }
+
+  .docs-prop-table > div {
+    min-width: 620px;
+  }
+
+  .docs-shell {
+    display: flex;
+    min-height: 100vh;
+    background: ${theme.bg};
+  }
+
+  .docs-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid ${theme.border};
+    padding: 28px 14px;
+    background: ${theme.bg};
+  }
+
+  .docs-sidebar-brand {
+    padding-left: 12px;
+    margin-bottom: 28px;
+  }
+
+  .docs-sidebar-title {
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.03em;
+    color: ${theme.text};
+  }
+
+  .docs-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .docs-sidebar-links {
+    margin-top: 28px;
+    padding-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .docs-main {
+    flex: 1;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 56px 48px 120px;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  .docs-footer-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .docs-hero {
+    padding: 48px;
+  }
+
+  .docs-hero h1 {
+    font-size: 48px;
+  }
+
+  .docs-type-grid {
+    display: grid;
+    grid-template-columns: 60px 140px 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 1024px) {
+    .docs-shell {
+      flex-direction: column;
+    }
+
+    .docs-sidebar {
+      width: 100% !important;
+      position: static !important;
+      height: auto !important;
+      border-right: none !important;
+      border-bottom: 1px solid ${theme.border} !important;
+      padding: 18px 16px !important;
+    }
+
+    .docs-main {
+      max-width: 100% !important;
+      padding: 28px 16px 88px !important;
+    }
+
+    .docs-sidebar-nav {
+      flex-direction: row !important;
+      flex-wrap: wrap;
+      gap: 8px !important;
+    }
+
+    .nav-link {
+      width: auto;
+    }
+
+    .docs-sidebar-brand,
+    .docs-sidebar-links {
+      padding-left: 0;
+    }
+
+    .docs-sidebar-links {
+      margin-top: 16px;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .docs-grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .docs-hero {
+      padding: 28px;
+    }
+
+    .docs-hero h1 {
+      font-size: 40px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .docs-sidebar {
+      padding: 14px 12px !important;
+    }
+
+    .docs-sidebar-brand {
+      margin-bottom: 18px;
+    }
+
+    .docs-sidebar-title {
+      font-size: 16px;
+    }
+
+    .docs-sidebar-nav {
+      gap: 6px !important;
+    }
+
+    .docs-sidebar-links {
+      display: none;
+    }
+
+    .docs-hero {
+      padding: 22px;
+      margin-bottom: 48px;
+    }
+
+    .docs-hero h1 {
+      font-size: 32px;
+    }
+
+    .docs-tab-row,
+    .docs-footer-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .tab-btn,
+    .docs-footer-actions a {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .docs-prop-table > div {
+      min-width: 100%;
+    }
+
+    .docs-type-grid {
+      grid-template-columns: 48px 1fr;
+      gap: 10px;
+    }
+
+    .docs-type-grid > span:nth-child(3),
+    .docs-type-grid > span:nth-child(4) {
+      grid-column: 1 / -1;
+    }
+  }
+
   .tab-btn {
     padding: 8px 18px;
     border-radius: 6px;
@@ -373,22 +576,14 @@ export default function ToonkitDocs() {
   return (
     <>
       <style>{globalStyles}</style>
-      <div style={{ display: "flex", minHeight: "100vh", background: theme.bg }}>
+      <div className="docs-shell">
         {/* Sidebar */}
         <aside
+          className="docs-sidebar"
           style={{
-            width: 220,
-            flexShrink: 0,
-            position: "sticky",
-            top: 0,
-            height: "100vh",
-            overflowY: "auto",
-            borderRight: `1px solid ${theme.border}`,
-            padding: "32px 12px",
-            background: theme.bg,
           }}
         >
-          <div style={{ paddingLeft: 14, marginBottom: 32 }}>
+          <div className="docs-sidebar-brand">
             <div
               style={{
                 display: "flex",
@@ -397,14 +592,7 @@ export default function ToonkitDocs() {
                 marginBottom: 6,
               }}
             >
-              <span
-                style={{
-                  fontWeight: 800,
-                  fontSize: 18,
-                  letterSpacing: "-0.03em",
-                  color: theme.text,
-                }}
-              >
+              <span className="docs-sidebar-title">
                 toonkit
               </span>
             </div>
@@ -423,10 +611,10 @@ export default function ToonkitDocs() {
           </div>
 
           <div
+            className="docs-sidebar-links"
             style={{
               fontSize: 10,
               color: theme.textMuted,
-              paddingLeft: 14,
               marginBottom: 8,
               letterSpacing: "0.12em",
               textTransform: "uppercase",
@@ -435,7 +623,7 @@ export default function ToonkitDocs() {
           >
             Documentation
           </div>
-          <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <nav className="docs-sidebar-nav">
             {navItems.map((item) => (
               <span
                 key={item.id}
@@ -447,7 +635,7 @@ export default function ToonkitDocs() {
             ))}
           </nav>
 
-          <div style={{ marginTop: 32, paddingLeft: 14, display: "flex", flexDirection: "column", gap: 8 }}>
+          <div className="docs-sidebar-links">
             <a
               href="https://github.com/ManojGowda89/toonkit"
               target="_blank"
@@ -486,20 +674,15 @@ export default function ToonkitDocs() {
 
         {/* Main Content */}
         <main
+          className="docs-main"
           style={{
-            flex: 1,
-            maxWidth: 860,
-            margin: "0 auto",
-            padding: "60px 48px 120px",
-            overflowX: "hidden",
           }}
         >
           {/* Hero */}
           <div
-            className="section-anim"
+            className="section-anim docs-hero"
             style={{
               marginBottom: 72,
-              padding: "48px",
               background: `linear-gradient(135deg, ${theme.surface} 0%, #0e0e1a 100%)`,
               border: `1px solid ${theme.border}`,
               borderRadius: 16,
@@ -614,14 +797,7 @@ export default function ToonkitDocs() {
               parsing, and type safety built in.
             </p>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 16,
-                marginBottom: 24,
-              }}
-            >
+            <div className="docs-grid-2" style={{ marginBottom: 24 }}>
               {[
                 { icon: "📉", label: "40-60% smaller", desc: "No repeated key names" },
                 { icon: "🔤", label: "Human-readable", desc: "Plain text, easy to edit" },
@@ -672,7 +848,7 @@ export default function ToonkitDocs() {
           <section id="import" className="section-anim" style={{ marginBottom: 64 }}>
             <SectionHeader id="import" icon="🔗" title="Import & Functions" />
 
-            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+            <div className="docs-tab-row">
               <button
                 className={`tab-btn ${tabImport === "esm" ? "active" : ""}`}
                 onClick={() => setTabImport("esm")}
@@ -699,6 +875,7 @@ export default function ToonkitDocs() {
               Function Signatures
             </h3>
             <div
+              className="docs-prop-table"
               style={{
                 background: theme.surface,
                 border: `1px solid ${theme.border}`,
@@ -962,12 +1139,10 @@ true
               ].map((item, i, arr) => (
                 <div
                   key={item.code}
+                  className="docs-type-grid"
                   style={{
                     padding: "14px 20px",
                     borderBottom: i < arr.length - 1 ? `1px solid ${theme.border}` : "none",
-                    display: "grid",
-                    gridTemplateColumns: "60px 140px 1fr 1fr",
-                    gap: 16,
                     alignItems: "center",
                   }}
                 >
@@ -1008,7 +1183,7 @@ true
               middleware to accept TOON payloads and respond with TOON strings.
             </p>
 
-            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+            <div className="docs-tab-row">
               {["setup", "receive", "send", "full"].map((t) => (
                 <button
                   key={t}
@@ -1255,14 +1430,7 @@ app.<span class="fn">listen</span>(<span class="num">3000</span>);</span>`}</Cod
 <span class="toon-val">DEVICE_PRO_01,87,true</span>
 <span class="toon-val">DEVICE_PRO_02,92,false</span>`}</CodeBlock>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 20,
-                marginTop: 24,
-              }}
-            >
+            <div className="docs-grid-2" style={{ marginTop: 24 }}>
               <div
                 style={{
                   background: theme.surface,
@@ -1336,7 +1504,7 @@ app.<span class="fn">listen</span>(<span class="num">3000</span>);</span>`}</Cod
                 Install from npm, import the functions, and start converting between JSON and TOON.
                 Perfect for REST APIs, bots, IoT devices, and any system where payload size matters.
               </p>
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <div className="docs-footer-actions">
                 <a
                   href="https://github.com/ManojGowda89/toonkit"
                   target="_blank"

@@ -40,3 +40,9 @@ a {
     color-scheme: dark;
   }
 }
+
+@media (max-width: 900px) {
+  body {
+    overscroll-behavior-y: none;
+  }
+}

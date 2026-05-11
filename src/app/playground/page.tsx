@@ -472,6 +472,114 @@ const css = `
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  @media (max-width: 1024px) {
+    .pg-main {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .pg-divider {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border-left: none;
+      border-right: none;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pg-direction-label {
+      white-space: normal;
+      text-align: left;
+    }
+
+    .pg-pane {
+      border-top: 1px solid var(--border);
+    }
+
+    .pg-pane-footer,
+    .pg-statusbar,
+    .pg-savings,
+    .pg-header,
+    .pg-examples {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .pg-savings {
+      flex-wrap: wrap;
+    }
+
+    .pg-pane-footer {
+      flex-wrap: wrap;
+      gap: 8px 12px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pg-header {
+      gap: 10px;
+    }
+
+    .pg-brand {
+      width: 100%;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .pg-title {
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .pg-statusbar {
+      gap: 10px 14px;
+      font-size: 10px;
+    }
+
+    .pg-examples {
+      gap: 6px;
+    }
+
+    .pg-ex-btn {
+      font-size: 10px;
+      padding: 5px 10px;
+    }
+
+    .pg-editor {
+      padding: 16px;
+      font-size: 12px;
+      line-height: 1.65;
+      min-height: 260px;
+    }
+
+    .pg-pane-header,
+    .pg-pane-footer {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+
+    .pg-pane-header {
+      gap: 8px;
+    }
+
+    .pg-pane-actions {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pg-pill {
+      padding: 3px 8px;
+    }
+
+    .pg-convert-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+    }
+  }
 `;
 
 // ── Example presets ─────────────────────────────────────────────────────────
