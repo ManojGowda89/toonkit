@@ -24,13 +24,21 @@ export const metadata: Metadata = {
     url: "https://toonkit.js.org",
     siteName: "Toonkit",
     type: "website",
-    images: ["https://toonkit.js.org/og-image.png"],
+    images: [
+      {
+        url: "https://toonkit.js.org/logo.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Toonkit Logo",
+      },
+    ],
   },
 
   twitter: {
     card: "summary_large_image",
     title: "Toonkit",
     description: "Compact typed alternative to JSON for JavaScript applications.",
+    image: "https://toonkit.js.org/logo.jpg",
   },
 };
 
@@ -39,6 +47,38 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="canonical" href="https://toonkit.js.org" />
+        <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+        <link rel="apple-touch-icon" href="/logo.jpg" />
+
+        {/* Structured Data (JSON-LD) for Organization & SoftwareApplication */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "Toonkit",
+              alternateName: "TOON - Typed Object Oriented Notation",
+              description:
+                "Compact typed alternative to JSON for JavaScript and Node.js applications",
+              url: "https://toonkit.js.org",
+              logo: "https://toonkit.js.org/logo.jpg",
+              image: "https://toonkit.js.org/logo.jpg",
+              applicationCategory: "DeveloperTool",
+              operatingSystem: "Any",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "USD",
+              },
+              author: {
+                "@type": "Person",
+                name: "Manoj Gowda",
+                url: "https://manojgowda.in",
+              },
+            }),
+          }}
+        />
       </head>
 
       <body>
