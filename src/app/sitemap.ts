@@ -1,30 +1,22 @@
-export default function sitemap() {
-  const baseUrl = "https://toonkit.manojgowda.in";
+export const dynamic = "force-static";
+export const revalidate = 0;
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/docs`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/playground`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/api-simulator`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/developer`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/examples`,
-      lastModified: new Date(),
-    },
+export default function sitemap() {
+  const urls = [
+    "https://toonkit.manojgowda.in",
+    "https://toonkit.js.org",
   ];
+  const pages = ["", "/docs", "/playground", "/api-simulator", "/developer", "/examples"];
+
+  const entries = [];
+  for (const url of urls) {
+    for (const page of pages) {
+      entries.push({
+        url: `${url}${page}`,
+        lastModified: new Date(),
+      });
+    }
+  }
+
+  return entries;
 }
