@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { Container, Typography, Link } from "@mui/material";
+import { SEO_DESCRIPTORS, SEO_KEYWORDS } from "../seoKeywords";
 
 export const metadata: Metadata = {
   title: "Developer - Toonkit",
   description: "Manoj Gowda - Creator of Toonkit. Explore projects, contributions, and tools built for developers.",
+  keywords: SEO_KEYWORDS,
+  other: {
+    "seo-descriptors": SEO_DESCRIPTORS.join(" | "),
+  },
 };
 
 export default function Page() {

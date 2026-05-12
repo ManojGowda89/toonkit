@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 
 import Providers from "./Providers";
+import { SEO_DESCRIPTORS, SEO_KEYWORDS } from "./seoKeywords";
 
 export const metadata: Metadata = {
   title: "Toonkit - Typed Object Oriented Notation",
   description:
     "Toonkit is a compact typed alternative to JSON for JavaScript and Node.js applications.",
+  keywords: SEO_KEYWORDS,
+  other: {
+    "seo-descriptors": SEO_DESCRIPTORS.join(" | "),
+  },
 
   metadataBase: new URL("https://toonkit.js.org"),
 
