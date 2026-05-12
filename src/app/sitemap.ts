@@ -6,7 +6,25 @@ export default function sitemap() {
     "https://toonkit.js.org",
     "https://toonkit.manojgowda.in",
   ];
-  const pages = ["", "/docs", "/playground", "/api-simulator", "/developer", "/examples"];
+  const pages = [
+    "",
+    "/docs",
+    "/playground",
+    "/api-simulator",
+    "/developer",
+    "/examples",
+    "/seo",
+    "/seo/toon-javascript-toolkit",
+    "/seo/toon-lightweight-utilities",
+    "/seo/toon-frontend-backend-workflows",
+    "/seo/toon-scalable-javascript-tools",
+    "/seo/toon-open-source-toolkit",
+    "/seo/toon-reusable-helper-functions",
+    "/seo/toon-performance-utilities",
+    "/seo/toon-modern-framework-support",
+    "/seo/toon-developer-ecosystem",
+    "/seo/toon-fast-scalable-utilities",
+  ];
 
   const entries = [];
   for (const domain of domains) {
