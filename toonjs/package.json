@@ -17,6 +17,18 @@
       "import": "./dist/express/index.js",
       "types": "./dist/express/index.d.ts",
       "default": "./dist/cjs/express/index.js"
+    },
+    "./fastify": {
+      "require": "./dist/cjs/fastify/index.js",
+      "import": "./dist/fastify/index.js",
+      "types": "./dist/fastify/index.d.ts",
+      "default": "./dist/cjs/fastify/index.js"
+    },
+    "./hono": {
+      "require": "./dist/cjs/hono/index.js",
+      "import": "./dist/hono/index.js",
+      "types": "./dist/hono/index.d.ts",
+      "default": "./dist/cjs/hono/index.js"
     }
   },
   "files": [
@@ -77,17 +89,34 @@
     "node": ">=14"
   },
   "devDependencies": {
+    "@hono/node-server": "^2.0.2",
     "@types/compression": "^1.8.0",
     "@types/express": "^5.0.3",
     "csstype": "^3.2.3",
     "express": "^5.1.0",
+    "fastify": "^5.8.5",
+    "hono": "^4.12.18",
     "typescript": "^5.0.0",
     "undici-types": "^8.0.0"
   },
   "dependencies": {
-    "compression": "^1.8.1"
+    "compression": "^1.8.1",
+    "fastify-plugin": "^5.1.0"
   },
   "peerDependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "fastify": "^5.8.0",
+    "hono": "^4.12.0"
+  },
+  "peerDependenciesMeta": {
+    "express": {
+      "optional": true
+    },
+    "fastify": {
+      "optional": true
+    },
+    "hono": {
+      "optional": true
+    }
   }
 }
