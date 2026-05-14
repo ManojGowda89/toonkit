@@ -35,22 +35,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toon = void 0;
-var fastify_plugin_1 = __importDefault(require("fastify-plugin"));
-var parser_1 = require("./parser");
-var response_1 = require("./response");
-var toonPlugin = function (fastify) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        (0, parser_1.setupParser)(fastify);
-        (0, response_1.setupResponse)(fastify);
-        return [2 /*return*/];
-    });
-}); };
-exports.toon = (0, fastify_plugin_1.default)(toonPlugin, {
-    name: "toonkit",
-    fastify: "5.x",
-});
+exports.setupRequestParser = setupRequestParser;
+var index_1 = require("../index");
+function setupRequestParser(c) {
+    var _this = this;
+    c.req.toon = function () { return __awaiter(_this, void 0, void 0, function () {
+        var body;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, c.req.text()];
+                case 1:
+                    body = _a.sent();
+                    if (!body)
+                        return [2 /*return*/, undefined];
+                    if (body.trim().startsWith("{") || body.trim().startsWith("[")) {
+                        try {
+                            return [2 /*return*/, JSON.parse(body)];
+                        }
+                        catch (_b) {
+                            return [2 /*return*/, (0, index_1.toonToJson)(body)];
+                        }
+                    }
+                    return [2 /*return*/, (0, index_1.toonToJson)(body)];
+            }
+        });
+    }); };
+}

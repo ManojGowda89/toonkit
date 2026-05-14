@@ -37,42 +37,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toon = toon;
-var index_1 = require("../index");
+var parser_1 = require("./parser");
+var response_1 = require("./response");
 function toon(_options) {
     var _this = this;
     if (_options === void 0) { _options = {}; }
     return function (c, next) { return __awaiter(_this, void 0, void 0, function () {
-        var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    c.toon = function (body) {
-                        var payload = typeof body === "string" ? body : (0, index_1.jsonToToon)(body);
-                        return c.text(payload, 200, {
-                            "Content-Type": "text/plain; charset=utf-8",
-                        });
-                    };
-                    c.req.toon = function () { return __awaiter(_this, void 0, void 0, function () {
-                        var body;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, c.req.text()];
-                                case 1:
-                                    body = _a.sent();
-                                    if (!body)
-                                        return [2 /*return*/, undefined];
-                                    if (body.trim().startsWith("{") || body.trim().startsWith("[")) {
-                                        try {
-                                            return [2 /*return*/, JSON.parse(body)];
-                                        }
-                                        catch (_b) {
-                                            return [2 /*return*/, (0, index_1.toonToJson)(body)];
-                                        }
-                                    }
-                                    return [2 /*return*/, (0, index_1.toonToJson)(body)];
-                            }
-                        });
-                    }); };
+                    (0, response_1.setupResponseHandler)(c);
+                    (0, parser_1.setupRequestParser)(c);
                     return [4 /*yield*/, next()];
                 case 1:
                     _a.sent();
