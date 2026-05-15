@@ -58,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Structured Data (JSON-LD) for Organization & SoftwareApplication */}
         <script
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -86,7 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
 
-      <body>
+      <body suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>

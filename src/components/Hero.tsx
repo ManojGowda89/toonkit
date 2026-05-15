@@ -57,7 +57,7 @@ export default function Hero() {
               },
             }}
           >
-            Typed Object Oriented Notation for modern APIs
+            Compact, typed text format for APIs — fast to parse, easy to read.
           </Typography>
 
           <Typography
@@ -66,36 +66,21 @@ export default function Hero() {
               color: "text.secondary",
               maxWidth: 720,
               mx: "auto",
-              lineHeight: 1.8,
+              lineHeight: 1.6,
             }}
           >
-            Official JavaScript library for TOON, recognized by Libraries.io
-            and verified by JS.org.
+            Simple: TOON is a compact, typed text format for APIs. toonkit is the
+            JavaScript toolkit that makes it easy to use TOON everywhere — in the
+            browser, in Node servers, and in HTTP clients.
           </Typography>
 
           <Typography
-            sx={{
-              mt: 1.5,
-              color: "text.secondary",
-              fontSize: { xs: "0.95rem", md: "1rem" },
-            }}
+            sx={{ mt: 1, color: "text.secondary", maxWidth: 720, mx: "auto", lineHeight: 1.6 }}
           >
-            Developed and maintained by{" "}
-            <Box
-              component={Link}
-              href="https://manojgowda.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              sx={{
-                color: "inherit",
-                fontWeight: 700,
-                textDecoration: "none",
-                borderBottom: "1px solid currentColor",
-              }}
-            >
-              Manoj Gowda
-            </Box>
-            .
+            What it provides: a fast parser (TOON → JS), a serializer (JS → TOON),
+            a convenient fetch helper and axios helpers for clients, plus server
+            adapters for Express, Fastify, Hono and Next so frontends and backends
+            can share the same compact format.
           </Typography>
         </motion.div>
 
