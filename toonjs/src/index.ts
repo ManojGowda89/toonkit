@@ -151,3 +151,16 @@ export function jsonToToon(obj: any): string {
 
   return result.trim();
 }
+
+export {
+  configureToonFetch as configureToonAxios,
+  createToonAxios,
+  toonAxios,
+  toonFetch,
+} from "./fetch/index";
+
+export type {
+  ToonClientOptions,
+  ToonFetchOptions,
+  ToonFetchResponse,
+} from "./fetch/index";

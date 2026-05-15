@@ -29,6 +29,18 @@
       "import": "./dist/hono/index.js",
       "types": "./dist/hono/index.d.ts",
       "default": "./dist/cjs/hono/index.js"
+    },
+    "./fetch": {
+      "require": "./dist/cjs/fetch/index.js",
+      "import": "./dist/fetch/index.js",
+      "types": "./dist/fetch/index.d.ts",
+      "default": "./dist/cjs/fetch/index.js"
+    },
+    "./next/server": {
+      "require": "./dist/cjs/next/server.js",
+      "import": "./dist/next/server.js",
+      "types": "./dist/next/server.d.ts",
+      "default": "./dist/cjs/next/server.js"
     }
   },
   "files": [
@@ -38,6 +50,7 @@
   ],
   "scripts": {
     "build": "tsc && tsc -p tsconfig.cjs.json",
+    "test": "npm run build && node test/all-exports.mjs",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build"
   },
@@ -64,7 +77,6 @@
     "javascript",
     "nodejs",
     "nextjs",
-    "react",
     "iot",
     "mqtt",
     "real-time",
@@ -92,21 +104,24 @@
     "@hono/node-server": "^2.0.2",
     "@types/compression": "^1.8.0",
     "@types/express": "^5.0.3",
-    "csstype": "^3.2.3",
     "express": "^5.1.0",
     "fastify": "^5.8.5",
     "hono": "^4.12.18",
+    "jsdom": "^22.1.0",
+    "next": "^16.2.6",
     "typescript": "^5.0.0",
     "undici-types": "^8.0.0"
   },
   "dependencies": {
+    "axios": "^1.16.1",
     "compression": "^1.8.1",
     "fastify-plugin": "^5.1.0"
   },
   "peerDependencies": {
     "express": "^5.1.0",
     "fastify": "^5.8.0",
-    "hono": "^4.12.0"
+    "hono": "^4.12.0",
+    "next": "^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0"
   },
   "peerDependenciesMeta": {
     "express": {
@@ -116,6 +131,9 @@
       "optional": true
     },
     "hono": {
+      "optional": true
+    },
+    "next": {
       "optional": true
     }
   }

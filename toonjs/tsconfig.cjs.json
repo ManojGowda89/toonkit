@@ -2,7 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "CommonJS",
-    "moduleResolution": "node",   // ✅ override for CJS
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@angular/common/http": ["node_modules/@angular/common/types/http.d.ts"]
+    },
     "outDir": "./dist/cjs"
   }
 }
