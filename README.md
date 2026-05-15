@@ -1,84 +1,41 @@
-# 📦 toonkit
+# toonkit
 
 ![npm](https://img.shields.io/npm/v/toonkit)
 ![downloads](https://img.shields.io/npm/dw/toonkit)
 ![license](https://img.shields.io/npm/l/toonkit)
 
-**Typed Object Oriented Notation (TOON) parser & serializer** for JavaScript/TypeScript.
+TOON parser, serializer, and framework adapter toolkit for JavaScript and TypeScript.
 
-This package provides **two main functions**:
+## Exports
 
-- `toonToJson(toon: string)` → converts **TOON text** into **JSON**
-- `jsonToToon(obj: any)` → converts **JSON** into **TOON text**
+Root exports:
 
-**Official Domains:**
-- 🌐 Primary: https://toonkit.js.org  
-- 🌐 Secondary: https://toonkit.manojgowda.in  
+- `safeParse(val: string)`
+- `toonToJson(input: string)`
+- `jsonToToon(obj: any)`
+- `configureToonAxios(options?)`
+- `createToonAxios(options?)`
+- `toonAxios`
+- `toonFetch(input, init?)`
 
-**Links:**
-- 📚 Docs: https://toonkit.js.org  
-- 📦 NPM: https://www.npmjs.com/package/toonkit  
-- 🐙 GitHub: https://github.com/ManojGowda89/toonkit
+Subpath exports:
 
----
+- `toonkit/fetch`
+- `toonkit/express`
+- `toonkit/fastify`
+- `toonkit/hono`
+- `toonkit/next/server`
 
-## ✨ Why TOON?
-
-JSON is great, but can be verbose. **TOON** is designed to be:
-
-- ✅ Compact payloads
-- ✅ Human-readable
-- ✅ Type-aware (via schema/type codes)
-- ✅ Good for APIs and automation
-
----
-
-## 📥 Installation
+## Install
 
 ```bash
 npm install toonkit
 ```
 
----
+## Core format
 
-## 📦 Import
+TOON uses headers like `key[count]{schema}:`.
 
-### ES Modules
-```js
-import { toonToJson, jsonToToon } from "toonkit";
-```
-
-### CommonJS
-```js
-const { toonToJson, jsonToToon } = require("toonkit");
-```
-
----
-
-## 🔁 Function 1: `toonToJson(input: string)`
-
-### ✅ What it does
-Parses TOON formatted text and returns a JavaScript object.
-
-### ✅ Supported type codes (based on your implementation)
-
-| Type | Meaning | Example TOON value | Output in JSON |
-|------|---------|--------------------|----------------|
-| `s`  | string  | `Manoj` | `"Manoj"` |
-| `n`  | number  | `36.7` | `36.7` |
-| `b`  | boolean | `true` | `true` |
-| `nl` | null    | `null` | `null` |
-| `j`  | JSON object | `{ "a": 1 }` | `{ a: 1 }` |
-| `a`  | array | `[1,2,3]` | `[1,2,3]` |
-| `td` | raw text/date (no parsing) | `03042026120000` | `"03042026120000"` |
-
-> Notes:
-> - `j` and `a` must be **valid JSON strings**, because parsing uses `JSON.parse`.
-> - `b` is parsed using `val === "true"` (case-sensitive).
-
-### ✅ Example (TOON → JSON)
-
-**TOON Input**
 ```text
 device_id[1]{0:s}:
 DEVICE_PRO_01
@@ -86,159 +43,112 @@ DEVICE_PRO_01
 battery[1]{0:n}:
 87
 
-is_active[1]{0:b}:
-true
-
-last_error[1]{0:nl}:
-null
-
-location[1]{0:j}:
-{
-  "lat": 12.9716,
-  "lng": 77.5946
-}
-
-tags[1]{0:a}:
-["iot", "health"]
-
-created_at[1]{0:td}:
-03042026120000
+employees[2]{id:n,name:s,active:b}:
+1,Ava,true
+2,Noah,false
 ```
 
-**JSON Output**
+Supported type codes:
+
+| Code | Meaning | Parse behavior |
+| --- | --- | --- |
+| `s` | string | returned as-is |
+| `n` | number | `Number(value)` |
+| `b` | boolean | `value === "true"` |
+| `j` | JSON object | `JSON.parse(value)` with raw fallback |
+| `a` | array | `JSON.parse(value)` with raw fallback |
+| `nl` | null | `null` |
+| `td` | raw text/date | returned as-is |
+
+## Core API
+
+### `toonToJson(input: string)`
+
+Parses TOON text into a JavaScript object.
+
 ```js
-{
-  device_id: "DEVICE_PRO_01",
-  battery: 87,
-  is_active: true,
-  last_error: null,
-  location: { lat: 12.9716, lng: 77.5946 },
-  tags: ["iot", "health"],
-  created_at: "03042026120000"
-}
+import { toonToJson } from "toonkit";
+
+const data = toonToJson(`device_id[1]{0:s}:\nDEVICE_PRO_01\n`);
 ```
 
----
+### `jsonToToon(obj: any)`
 
-## 🔁 Function 2: `jsonToToon(obj: any)`
+Serializes a JavaScript object into TOON text.
 
-### ✅ What it does
-Serializes a JavaScript object into TOON format.
-
-### ✅ How types are detected
-Your `getType()` function maps values like this:
-
-- `null` → `nl`
-- `string` → `s`
-- `number` → `n`
-- `boolean` → `b`
-- `array` → `a`
-- `object` → `j`
-
-> Note: Since JavaScript dates are usually strings (or `Date` objects), your current serializer will treat:
-> - `"03042026120000"` as `s`
-> - `new Date()` as `j` (because it’s an object) unless you handle it separately.
-
-### ✅ Example (JSON → TOON)
-
-**JSON Input**
 ```js
-const obj = {
-  device_id: "DEVICE_PRO_01",
-  battery: 87,
-  temperature: 36.7,
-  is_active: true,
-  last_error: null,
-  location: { lat: 12.9716, lng: 77.5946 },
-  tags: ["iot", "health", "tracker"]
-};
+import { jsonToToon } from "toonkit";
+
+const toon = jsonToToon({ device_id: "DEVICE_PRO_01", battery: 87 });
 ```
 
-**TOON Output**
-```text
-device_id[1]{0:s}:
-DEVICE_PRO_01
+## Fetch client
 
-battery[1]{0:n}:
-87
+`toonFetch()` wraps axios with TOON-aware request and response handling.
 
-temperature[1]{0:n}:
-36.7
+```js
+import { toonFetch } from "toonkit";
 
-is_active[1]{0:b}:
-true
-
-last_error[1]{0:nl}:
-null
-
-location[1]{0:j}:
-{
-  "lat": 12.9716,
-  "lng": 77.5946
-}
-
-tags[1]{0:a}:
-[
-  "iot",
-  "health",
-  "tracker"
-]
+const result = await toonFetch("http://localhost:3000/users", {
+  method: "POST",
+  data: { employees: [{ id: 1, name: "Ava" }] },
+});
 ```
 
----
+## Express
 
-## 🖥 Express Example (TOON ⇄ JSON)
+Import from `toonkit/express`.
 
 ```js
 import express from "express";
-import { toonToJson, jsonToToon } from "toonkit";
+import { toon } from "toonkit/express";
 
 const app = express();
+app.use(...toon());
 
-// Needed to accept TOON as plain text
-app.use(express.text());
-
-// Needed to accept JSON body
-app.use(express.json());
-
-// TOON → JSON
-app.post("/toon", (req, res) => {
-  try {
-    const json = toonToJson(req.body);
-    res.json(json);
-  } catch (err) {
-    res.status(500).json({ error: "TOON Parsing failed" });
-  }
+app.post("/devices", (req, res) => {
+  res.toon({ ok: true, received: req.toon() });
 });
-
-// JSON → TOON
-app.post("/json", (req, res) => {
-  try {
-    const toon = jsonToToon(req.body);
-    res.type("text/plain").send(toon);
-  } catch (err) {
-    res.status(500).json({ error: "JSON Conversion failed" });
-  }
-});
-
-app.listen(3000, () => console.log("Server running at http://localhost:3000"));
 ```
 
-### Postman (TOON endpoint)
-- Method: `POST`
-- URL: `http://localhost:3000/toon`
-- Header:
-  ```
-  Content-Type: text/plain
-  ```
-- Body → raw → Text:
-  ```text
-  device_id[1]{0:s}:
-  DEVICE_PRO_01
-  ```
+## Fastify
 
----
+Import from `toonkit/fastify`.
 
-## 📄 License
+```js
+import Fastify from "fastify";
+import { toon } from "toonkit/fastify";
+
+const fastify = Fastify();
+await fastify.register(toon);
+```
+
+## Hono
+
+Import from `toonkit/hono`.
+
+```ts
+import { Hono } from "hono";
+import { toon } from "toonkit/hono";
+
+const app = new Hono();
+app.use("*", toon());
+```
+
+## Next.js
+
+Import from `toonkit/next/server`.
+
+```ts
+import { NextRequest } from "next/server";
+import { ToonResponse, parseToonRequest } from "toonkit/next/server";
+
+export async function POST(req: NextRequest) {
+  const body = await parseToonRequest(req);
+  return ToonResponse.toon({ ok: true, received: body });
+}
+```
+
+## License
 
 MIT

@@ -381,7 +381,13 @@ const navItems: NavItem[] = [
   { id: "toon-to-json", label: "toonToJson()" },
   { id: "json-to-toon", label: "jsonToToon()" },
   { id: "types", label: "Type Codes" },
+  { id: "core-frontend", label: "Core / Frontend" },
+  { id: "fetch", label: "Fetch / Client" },
   { id: "express", label: "Express Example" },
+  { id: "express-plugin", label: "Express Plugin" },
+  { id: "fastify", label: "Fastify Plugin" },
+  { id: "hono", label: "Hono Plugin" },
+  { id: "next-server", label: "Next.js Server" },
   { id: "postman", label: "Postman Testing" },
   { id: "performance", label: "Performance" },
 ];
@@ -765,7 +771,8 @@ export default function ToonkitDocs() {
               subtitle="Why TOON? Why this library?"
             />
             <p style={{ fontSize: 15, color: theme.textDim, lineHeight: 1.8, marginBottom: 20 }}>
-              <strong style={{ color: theme.text }}>toonkit</strong> provides two core functions:
+              <strong style={{ color: theme.text }}>toonkit</strong> provides a core parser/serializer
+              and framework adapters for easy integration with HTTP clients and servers.
             </p>
             <ul style={{ fontSize: 15, color: theme.textDim, lineHeight: 1.8, marginBottom: 24, paddingLeft: 20 }}>
               <li style={{ marginBottom: 12 }}>
@@ -774,17 +781,14 @@ export default function ToonkitDocs() {
                 </code>{" "}
                 — Parses TOON text into JavaScript objects
               </li>
-              <li>
-                <code
-                  style={{
-                    color: theme.accent,
-                    fontFamily: "'Space Mono', monospace",
-                    fontWeight: 700,
-                  }}
-                >
+              <li style={{ marginBottom: 12 }}>
+                <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace", fontWeight: 700 }}>
                   jsonToToon(obj: any)
                 </code>{" "}
                 — Serializes JavaScript objects to TOON format
+              </li>
+              <li>
+                Adapter exports — `toonkit/express`, `toonkit/fastify`, `toonkit/hono`, `toonkit/next/server`, and a `toonkit/fetch` client for convenience.
               </li>
             </ul>
 
@@ -864,11 +868,12 @@ export default function ToonkitDocs() {
             </div>
 
             {tabImport === "esm" ? (
-              <CodeBlock label="ES Module Import">{`<span class="kw">import</span> { <span class="fn">toonToJson</span>, <span class="fn">jsonToToon</span> }
-  <span class="kw">from</span> <span class="str">"toonkit"</span>;`}</CodeBlock>
+              <CodeBlock label="ES Module Import">{`<span class="kw">import</span> { <span class="fn">toonToJson</span>, <span class="fn">jsonToToon</span>, <span class="fn">toonFetch</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
+<span class="kw">import</span> { <span class="fn">toon</span> } <span class="kw">from</span> <span class="str">"toonkit/express"</span>;
+// or: import { toon } from "toonkit/fastify"`}</CodeBlock>
             ) : (
-              <CodeBlock label="CommonJS Require">{`<span class="kw">const</span> { <span class="fn">toonToJson</span>, <span class="fn">jsonToToon</span> }
-  = <span class="fn">require</span>(<span class="str">"toonkit"</span>);`}</CodeBlock>
+              <CodeBlock label="CommonJS Require">{`<span class="kw">const</span> { <span class="fn">toonToJson</span>, <span class="fn">jsonToToon</span>, <span class="fn">toonFetch</span> } = <span class="fn">require</span>(<span class="str">"toonkit"</span>);
+<span class="kw">const</span> { <span class="fn">toon</span> } = <span class="kw">require</span>(<span class="str">"toonkit/express"</span>);`}</CodeBlock>
             )}
 
             <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.text, marginBottom: 16, marginTop: 28 }}>
@@ -1312,6 +1317,218 @@ app.<span class="fn">listen</span>(<span class="num">3000</span>);</span>`}</Cod
           </section>
 
           {/* ── POSTMAN ── */}
+
+          {/* ── CORE PARSER & FRONTEND ── */}
+          <section id="core-frontend" className="section-anim" style={{ marginBottom: 64 }}>
+            <SectionHeader id="core-frontend" icon="🧭" title="Core parser & Frontend usage" subtitle="How the main parser works and using TOON in browsers" />
+
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 12 }}>
+              The core of `toonkit` is the parser/serializer pair:
+            </p>
+            <ul style={{ fontSize: 13, color: theme.textDim, marginBottom: 16 }}>
+              <li><code style={{ color: theme.accent }}>toonToJson(input: string)</code> — parse TOON text into typed JavaScript objects.</li>
+              <li><code style={{ color: theme.accent }}>jsonToToon(obj: any)</code> — serialize JS objects into TOON text.</li>
+            </ul>
+
+            <h3 style={{ fontSize: 15, color: theme.text, marginBottom: 8 }}>Using the parser in the browser</h3>
+            <p style={{ fontSize: 13, color: theme.textDim, marginBottom: 12 }}>
+              Two common front-end patterns: fetch the raw TOON response and parse locally, or use `toonFetch` which returns parsed data.
+            </p>
+
+            <CodeBlock label="Manual fetch + parse">{`<span class="kw">import</span> { <span class="fn">toonToJson</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
+
+<span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="str">"/api/devices"</span>);
+<span class="kw">const</span> text = <span class="kw">await</span> res.text();
+<span class="kw">const</span> data = <span class="fn">toonToJson</span>(text);`}</CodeBlock>
+
+            <CodeBlock label="Using toonFetch (direct)">{`<span class="kw">import</span> { <span class="fn">toonFetch</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
+
+<span class="kw">const</span> result = <span class="kw">await</span> <span class="fn">toonFetch</span>(<span class="str">"/api/devices"</span>);
+<span class="kw">const</span> data = result.data; <span class="comment">// already parsed</span>`}</CodeBlock>
+          </section>
+          {/* ── FETCH CLIENT ── */}
+          <section id="fetch" className="section-anim" style={{ marginBottom: 64 }}>
+            <SectionHeader id="fetch" icon="🌐" title="Fetch client" subtitle="`toonFetch`, `configureToonFetch`, and `createToonAxios` examples" />
+
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 12 }}>
+              `toonkit` provides a lightweight fetch wrapper and axios helpers that automatically
+              handle TOON serialization and parsing, plus convenience token handling.
+            </p>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>Basic GET</h4>
+            <CodeBlock label="Basic GET">{`<span class="kw">import</span> { <span class="fn">toonFetch</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
+
+<span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">toonFetch</span>(<span class="str">"https://localhost:3000/users"</span>);
+console.log(res.data);`}</CodeBlock>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>GET with headers</h4>
+            <CodeBlock label="GET With Headers">{`const res = <span class="kw">await</span> <span class="fn">toonFetch</span>(<span class="str">"https://localhost:3000/users"</span>, {
+  headers: {
+    Authorization: <span class="str">"Bearer token123"</span>,
+    "x-api-key": <span class="str">"abc123"</span>
+  }
+});
+
+console.log(res.data);`}</CodeBlock>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>Token shortcut</h4>
+            <p style={{ fontSize: 13, color: theme.textDim }}>Pass `token` as a string or function — it's added as `Authorization: Bearer ...`.</p>
+            <CodeBlock label="Token (string)">{`const res = <span class="kw">await</span> <span class="fn">toonFetch</span>(<span class="str">"https://localhost:3000/users"</span>, {
+  token: <span class="str">"mytoken"</span>
+});
+
+// header => Authorization: Bearer mytoken`}</CodeBlock>
+
+            <CodeBlock label="Token (function)">{`const res = <span class="kw">await</span> <span class="fn">toonFetch</span>(<span class="str">"https://localhost:3000/profile"</span>, {
+  token: () =&gt; localStorage.getItem(<span class="str">"jwt"</span>)
+});`}</CodeBlock>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>POST — TOON body (default)</h4>
+            <p style={{ fontSize: 13, color: theme.textDim }}>By default, providing `data` will serialize to TOON and set `Content-Type: application/toon`.</p>
+            <CodeBlock label="POST TOON">{`await <span class="kw">await</span> <span class="fn">toonFetch</span>(<span class="str">"https://localhost:3000/users"</span>, {
+  method: <span class="str">"POST"</span>,
+  data: { name: <span class="str">"Manoj"</span>, age: <span class="num">22</span> }
+});`}</CodeBlock>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>POST — send JSON instead</h4>
+            <p style={{ fontSize: 13, color: theme.textDim }}>Override `Content-Type` to `application/json` to send JSON payloads.</p>
+            <CodeBlock label="POST JSON">{`await <span class="kw">await</span> <span class="fn">toonFetch</span>(<span class="str">"https://localhost:3000/users"</span>, {
+  method: <span class="str">"POST"</span>,
+  headers: { "Content-Type": <span class="str">"application/json"</span> },
+  data: { name: <span class="str">"Manoj"</span> }
+});`}</CodeBlock>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>Full example (headers + token + body)</h4>
+            <CodeBlock label="Full Example">{`const res = <span class="kw">await</span> <span class="fn">toonFetch</span>(<span class="str">"https://localhost:3000/create-user"</span>, {
+  method: <span class="str">"POST"</span>,
+  token: <span class="str">"jwt_token_here"</span>,
+  headers: { "x-app": <span class="str">"toonkit"</span> },
+  data: { username: <span class="str">"manoj"</span>, email: <span class="str">"manoj@gmail.com"</span> }
+});
+
+console.log(res.data);`}</CodeBlock>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>Configure global base URL</h4>
+            <CodeBlock label="configureToonFetch">{`<span class="kw">import</span> { <span class="fn">configureToonFetch</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
+
+<span class="fn">configureToonFetch</span>({ baseURL: <span class="str">"https://api.example.com"</span>, token: () =&gt; localStorage.getItem(<span class="str">"token"</span>) });
+
+// now: await toonFetch('/users') -> https://api.example.com/users`}</CodeBlock>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>Create a separate axios client</h4>
+            <CodeBlock label="createToonAxios">{`<span class="kw">import</span> { <span class="fn">createToonAxios</span> } <span class="kw">from</span> <span class="str">"toonkit"</span>;
+
+<span class="kw">const</span> api = <span class="fn">createToonAxios</span>({ baseURL: <span class="str">"https://api.example.com"</span>, token: <span class="str">"abc123"</span> });
+
+<span class="kw">const</span> users = <span class="kw">await</span> api.get(<span class="str">"/users"</span>);
+console.log(users.data);`}</CodeBlock>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>Response format</h4>
+            <p style={{ fontSize: 13, color: theme.textDim }}>
+              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>toonFetch</code> returns an object
+              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>{'{ data, response }'}</code> where
+              <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>data</code> is already parsed JS (TOON or JSON)
+              and <code style={{ color: theme.accent, fontFamily: "'Space Mono', monospace" }}>response</code> is a Fetch-like `Response` wrapper.
+            </p>
+            <CodeBlock label="Response Format">{`const { data, response } = <span class="kw">await</span> <span class="fn">toonFetch</span>(<span class="str">"/users"</span>);
+console.log(data);
+console.log(response.status);`}</CodeBlock>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>Example Express backend</h4>
+            <p style={{ fontSize: 13, color: theme.textDim }}>A simple Express route that accepts TOON text and returns a TOON response.</p>
+            <CodeBlock label="Express Backend">{`app.post(<span class="str">"/users"</span>, express.<span class="fn">text</span>(), (req, res) => {
+  console.log(req.body); // TOON string
+
+  res.setHeader(<span class="str">"Content-Type"</span>, <span class="str">"application/toon"</span>);
+
+  res.send(<span class="str">'name[1]{0:s}:\nManoj\nage[1]{0:n}:\n22'</span>);
+});`}</CodeBlock>
+
+            <h4 style={{ fontSize: 14, color: theme.text, marginBottom: 8 }}>Real usage example (login)</h4>
+            <CodeBlock label="Login Example">{`const login = <span class="kw">async</span> () =&gt; {
+  const { data } = <span class="kw">await</span> <span class="fn">toonFetch</span>(<span class="str">"/login"</span>, {
+    method: <span class="str">"POST"</span>,
+    headers: { "Content-Type": <span class="str">"application/json"</span> },
+    data: { email: <span class="str">"manoj@gmail.com"</span>, password: <span class="str">"123456"</span> }
+  });
+
+  console.log(data);
+};`}</CodeBlock>
+          </section>
+
+          {/* ── FASTIFY ── */}
+          <section id="fastify" className="section-anim" style={{ marginBottom: 64 }}>
+            <SectionHeader id="fastify" icon="🚀" title="Fastify Integration" subtitle="Register plugin for request/response handling" />
+
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
+              Fastify users can register the `toon` plugin to parse TOON bodies and send TOON responses.
+            </p>
+
+            <CodeBlock label="Fastify Plugin">{`<span class="kw">import</span> Fastify <span class="kw">from</span> <span class="str">"fastify"</span>;
+<span class="kw">import</span> { <span class="fn">toon</span> } <span class="kw">from</span> <span class="str">"toonkit/fastify"</span>;
+
+<span class="kw">const</span> app = <span class="fn">Fastify</span>();
+await app.<span class="fn">register</span>(<span class="fn">toon</span>);
+
+app.<span class="fn">post</span>(<span class="str">"/devices"</span>, async (req, reply) =&gt; {
+  <span class="kw">const</span> data = req.toon();
+  reply.toon({ ok: <span class="kw">true</span>, received: data });
+});`}</CodeBlock>
+          </section>
+
+          {/* ── EXPRESS PLUGIN ── */}
+          <section id="express-plugin" className="section-anim" style={{ marginBottom: 64 }}>
+            <SectionHeader id="express-plugin" icon="🧩" title="Express plugin" subtitle="Register middleware for Express" />
+
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 12 }}>
+              Express users can mount the `toon` middleware from `toonkit/express` to get `req.toon()` and `res.toon()` helpers.
+            </p>
+
+            <CodeBlock label="Express Plugin">{`<span class="kw">import</span> express <span class="kw">from</span> <span class="str">"express"</span>;
+<span class="kw">import</span> { <span class="fn">toon</span> } <span class="kw">from</span> <span class="str">"toonkit/express"</span>;
+
+<span class="kw">const</span> app = <span class="fn">express</span>();
+<span class="comment">// Mount middleware (returns [parser, responder] or a single middleware depending on build)</span>
+app.<span class="fn">use</span>(...<span class="fn">toon</span>());
+
+app.<span class="fn">post</span>(<span class="str">"/devices"</span>, (req, res) =&gt; {
+  <span class="kw">const</span> data = req.toon();
+  res.toon({ ok: <span class="kw">true</span>, received: data });
+});`}</CodeBlock>
+          </section>
+
+          {/* ── HONO ── */}
+          <section id="hono" className="section-anim" style={{ marginBottom: 64 }}>
+            <SectionHeader id="hono" icon="🔗" title="Hono Integration" subtitle="Middleware for Hono apps" />
+
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
+              Use the `toon` middleware for Hono to parse and respond with TOON.
+            </p>
+
+            <CodeBlock label="Hono Middleware">{`<span class="kw">import</span> { <span class="fn">Hono</span> } <span class="kw">from</span> <span class="str">"hono"</span>;
+<span class="kw">import</span> { <span class="fn">toon</span> } <span class="kw">from</span> <span class="str">"toonkit/hono"</span>;
+
+<span class="kw">const</span> app = <span class="kw">new</span> <span class="fn">Hono</span>();
+app.use(<span class="str">"*"</span>, <span class="fn">toon</span>());
+
+app.post(<span class="str">"/devices"</span>, (c) =&gt; c.json({ ok: <span class="kw">true</span>, received: c.req.toon() }));`}</CodeBlock>
+          </section>
+
+          {/* ── NEXT (server) ── */}
+          <section id="next-server" className="section-anim" style={{ marginBottom: 64 }}>
+            <SectionHeader id="next-server" icon="⚙️" title="Next.js (Edge/Server)" subtitle="Parsing TOON in route handlers" />
+
+            <p style={{ fontSize: 14, color: theme.textDim, marginBottom: 16, lineHeight: 1.7 }}>
+              Next server adapters expose `parseToonRequest` and `ToonResponse` helpers for route handlers.
+            </p>
+
+            <CodeBlock label="Next.js Route">{`<span class="kw">import</span> { <span class="fn">parseToonRequest</span>, <span class="fn">ToonResponse</span> } <span class="kw">from</span> <span class="str">"toonkit/next/server"</span>;
+
+export async function POST(req) {
+  <span class="kw">const</span> body = await <span class="fn">parseToonRequest</span>(req);
+  <span class="kw">return</span> <span class="fn">ToonResponse</span>.toon({ ok: <span class="kw">true</span>, received: body });
+}`}</CodeBlock>
+          </section>
           <section id="postman" className="section-anim" style={{ marginBottom: 64 }}>
             <SectionHeader
               id="postman"
