@@ -1,10 +1,12 @@
 import compression, { type CompressionOptions } from "compression";
-import express, { type RequestHandler } from "express";
+import express from "express";
 import { toonToJson } from "../index";
+
+type RequestHandler = (req: any, res: any, next: (err?: any) => void) => void;
 
 export type ToonExpressParserOptions = {
   compression?: boolean | CompressionOptions;
-  text?: boolean | NonNullable<Parameters<typeof express.text>[0]>;
+  text?: boolean | Record<string, unknown>;
 };
 
 const defaultTextTypes = [
