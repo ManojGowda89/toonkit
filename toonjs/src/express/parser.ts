@@ -1,12 +1,11 @@
 import compression, { type CompressionOptions } from "compression";
-import express from "express";
+import { text as bodyText, type OptionsText } from "body-parser";
+import type { RequestHandler } from "express-serve-static-core";
 import { toonToJson } from "../index";
-
-type RequestHandler = (req: any, res: any, next: (err?: any) => void) => void;
 
 export type ToonExpressParserOptions = {
   compression?: boolean | CompressionOptions;
-  text?: boolean | Record<string, unknown>;
+  text?: boolean | OptionsText;
 };
 
 const defaultTextTypes = [
@@ -35,9 +34,9 @@ export function createTextMiddleware(
     return null;
   }
 
-  const textOptions = options && typeof options === "object" ? options : {};
+  const textOptions = options && typeof options === "object" ? options : undefined;
 
-  return express.text({
+  return bodyText({
     type: defaultTextTypes,
     ...textOptions
   });

@@ -1,7 +1,13 @@
+import type { RequestHandler } from "express-serve-static-core";
+
 import { createCompressionMiddleware, createTextMiddleware, createRequestMiddleware, type ToonExpressParserOptions } from "./parser";
 import { createResponseMiddleware } from "./response";
 
-type RequestHandler = (req: any, res: any, next: (err?: any) => void) => void;
+declare module "express-serve-static-core" {
+  interface Request {
+    toon(): any;
+  }
+}
 
 export type ToonExpressOptions = ToonExpressParserOptions;
 

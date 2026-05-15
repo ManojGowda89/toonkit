@@ -1,6 +1,12 @@
 import { jsonToToon } from "../index";
 
-type RequestHandler = (req: any, res: any, next: (err?: any) => void) => void;
+import type { RequestHandler } from "express-serve-static-core";
+
+declare module "express-serve-static-core" {
+  interface Response {
+    toon(body: unknown): this;
+  }
+}
 
 export function createResponseMiddleware(): RequestHandler {
   return (_req, res, next) => {
