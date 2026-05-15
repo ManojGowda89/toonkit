@@ -1,4 +1,4 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler } from "express-serve-static-core";
 
 import { createCompressionMiddleware, createTextMiddleware, createRequestMiddleware, type ToonExpressParserOptions } from "./parser";
 import { createResponseMiddleware } from "./response";
